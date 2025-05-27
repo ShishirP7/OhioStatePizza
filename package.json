@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "keen-slider": "^6.8.6",
+    "lucide-react": "^0.511.0",
+    "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.2"
+    "react-responsive-carousel": "^3.2.23"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
