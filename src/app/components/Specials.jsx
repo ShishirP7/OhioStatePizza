@@ -1,11 +1,37 @@
-// components/Specials.tsx
 import React from "react";
 import { ShoppingCart } from "lucide-react";
+
+const specialCombo = [
+  {
+    title: "Smoked Brisket",
+    desc: "Pulled Pork, Beer Braised Brisket, & Quarter",
+    price: "$40",
+    image: "https://png.pngtree.com/png-vector/20240602/ourmid/pngtree-biggest-burger-transparent-picture-png-image_12606363.png",
+  },
+  {
+    title: "Buffalo Ranch",
+    desc: "Pulled Pork, Beer Braised Brisket, & Quarter",
+    price: "$40",
+    image: "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-3d-illustration-cheese-burger-png-image_10245728.png",
+  },
+  {
+    title: "BBQ Burger",
+    desc: "Pulled Pork, Beer Braised Brisket, & Quarter",
+    price: "$30",
+    image: "https://pngimg.com/d/burger_sandwich_PNG4114.png",
+  },
+  {
+    title: "Big Hootie",
+    desc: "Pulled Pork, Beer Braised Brisket, & Quarter",
+    price: "$40",
+    image: "https://pngimg.com/d/burger_sandwich_PNG4114.png",
+  },
+];
 
 const Specials = () => {
   return (
     <section className="w-full py-16 bg-white text-black relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 text-center">
+      <div className="max-w-7xl mx-auto px-4 text-center">
         <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
           Specials Combo
         </h3>
@@ -13,28 +39,49 @@ const Specials = () => {
           Our delicious burgers
         </h2>
 
-        <div className="flex justify-center gap-8">
-          {[1, 1, 1].map((item, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 hover:cursor-grab">
+          {specialCombo.map((item, index) => (
             <div
-              className="bg-green-200  hover:bg-red-600  hover:text-white px-6 pt-6 pb-16 rounded-lg shadow-lg max-w-xs transition-all duration-300 transform hover:-translate-y-3 hover:shadow-xl"
               key={index}
+              className="group relative bg-white shadow-2xl rounded-xl p-6 flex flex-col justify-between items-center transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-2"
             >
-              <div>
-                <h4 className="text-lg font-bold leading-tight mb-2">
-                  2 Extra Large
-                  <br />
-                  Pizzas (1 Topping)
-                </h4>
-                <p className="text-2xl font-bold transition-all hover:text-white mb-4">
-                  $ 23.95
-                </p>
+              {/* Hover background image + red overlay */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-0"
+                style={{
+                  backgroundImage: "url('/pizzabg.jpg')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  mixBlendMode: "multiply",
+                }}
+              />
+              <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-90  z-0" />
 
-                <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
-                  <div className="hover:bg-yellow-400 w-14 h-14 rounded-full flex items-center justify-center shadow-md">
-                    <ShoppingCart className="w-5 h-5 text-black" />
-                  </div>
-                </div>
+              {/* Content */}
+              <div className="relative z-10 text-center mb-4">
+                <h4 className="text-xl font-extrabold text-black group-hover:text-white">
+                  {item.title}
+                </h4>
+                <p className="text-sm text-gray-500 mt-1 group-hover:text-white">
+                  {item.desc}
+                </p>
+                <p className="text-2xl font-bold text-red-600 mt-4 group-hover:text-white">
+                  {item.price}
+                </p>
               </div>
+
+              {/* Button */}
+              <button className="relative z-10 bg-[#fff7ec] text-red-600 group-hover:bg-yellow-400 group-hover:text-black mt-4 px-6 py-2 rounded-full flex items-center gap-2 shadow-md font-semibold transition-all">
+                <ShoppingCart className="w-4 h-4" />
+                ORDER NOW
+              </button>
+
+              {/* Burger image */}
+              <img
+                src={item.image}
+                alt={item.title}
+                className="relative z-10 mt-6 h-36  object-contain"
+              />
             </div>
           ))}
         </div>
