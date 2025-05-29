@@ -3,12 +3,14 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1c1c1c] text-white pt-20 pb-6 relative overflow-hidden ">
-      {/* Top Decorative Brush */}
-      <div className="absolute top-0 left-0 w-full h-[60px] bg-[url('/footer-top-brush.svg')] bg-no-repeat bg-top bg-cover z-0" />
+    <footer className="bg-[#1c1c1c] text-white pt-28 pb-6 relative overflow-hidden">
+      {/* Top Torn Effect */}
+      <div className="absolute top-0 left-0 w-full h-[60px] bg-[url('/tore.png')] bg-repeat-x bg-bottom bg-contain z-40 pointer-events-none rotate-180">
+      
+      </div>
 
       {/* Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Logo */}
         <div className="text-center mb-12">
           <img
@@ -21,8 +23,8 @@ const Footer = () => {
         </div>
 
         {/* Grid Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left ">
-          <div className="">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center md:text-left">
+          <div>
             <h4 className="font-bold text-lg mb-3">Address</h4>
             <p className="text-sm text-gray-300">
               325 E Hudson St,<br />Columbus, OH 43202
@@ -51,10 +53,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Divider */}
         <hr className="border-gray-700 my-8" />
 
-        {/* Copyright */}
         <p className="text-xs text-center text-gray-400">
           © 2025 © 2019, Gloreya. All rights reserved
         </p>
