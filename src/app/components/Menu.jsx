@@ -1,5 +1,5 @@
-// components/MenuSection.tsx
 import React from 'react';
+import { ShoppingCart } from 'lucide-react'; // Or use any emoji/icon if you prefer
 
 const categories = [
   { icon: '🍔', label: 'Burgers' },
@@ -25,30 +25,39 @@ const MenuSection = () => {
     <section className="w-full py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">Menu</h3>
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-gray-900">Choose your combo <br/>&  order now!</h2>
+        <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-gray-900">
+          Choose your combo <br />& order now!
+        </h2>
 
-        <div className="flex justify-center space-x-6 mb-10">
+        {/* Category Buttons */}
+        <div className="flex justify-center flex-wrap gap-4 mb-10">
           {categories.map((cat, index) => (
-            <div key={index} className="flex flex-col items-center">
+            <div key={index} className="flex flex-col items-center hover:cursor-pointer transition-transform transform hover:scale-110">
               <span className="text-3xl">{cat.icon}</span>
               <span className="text-sm font-semibold mt-1 uppercase text-red-600">{cat.label}</span>
             </div>
           ))}
         </div>
 
+        {/* Menu Items */}
         <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8 text-left">
           {menuItems.map((item, idx) => (
             <div key={idx} className="relative border-b border-dotted pb-3">
-              {item.badge && (
-                <span className="absolute -top-2 left-0 text-xs font-bold text-white bg-red-500 rounded-full px-2 py-0.5">
-                  {item.badge}
-                </span>
-              )}
               <div className="flex justify-between items-center">
                 <p className="text-lg font-semibold text-gray-900">{item.name}</p>
-                <p className="text-red-600 font-bold text-lg">{item.price}</p>
+                <div className="flex items-center gap-3">
+                  <p className="text-red-600 font-bold text-lg">{item.price}</p>
+                  <button
+                    aria-label="Add to cart"
+                    className="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-yellow-500 hover:cursor-pointer transition"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <p className="text-sm text-gray-500">Pulled Pork, Beer Braised Brisket, & Quarter Rack of Ribs served with your choice of side</p>
+              <p className="text-sm text-gray-500">
+                Pulled Pork, Beer Braised Brisket, & Quarter Rack of Ribs served with your choice of side
+              </p>
             </div>
           ))}
         </div>
