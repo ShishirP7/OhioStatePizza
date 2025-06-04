@@ -75,7 +75,7 @@ const Specials = () => {
                 </div>
 
                 {/* Button */}
-                <button className="relative z-10 bg-[#fff7ec] text-red-600 group-hover:bg-yellow-400 group-hover:text-black mt-4 px-6 py-2 rounded-full flex items-center gap-2 shadow-md font-semibold transition-all">
+                <button className="relative z-10 bg-yellow-400 text-black group-hover:bg-yellow-400 group-hover:text-black mt-4 px-6 py-2 rounded-full flex items-center gap-2 shadow-md font-semibold transition-all">
                   <ShoppingCart className="w-4 h-4" />
                   ORDER NOW
                 </button>
