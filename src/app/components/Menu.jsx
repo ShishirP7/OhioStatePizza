@@ -4,8 +4,8 @@ import { ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
 import { menuItems } from "../data/menuItems";
-import SelectionModal from "./modals/selectionModal";
-import CustomizeItemForm from "./forms/itemForm";
+import SelectionModal from "./modals/selectionModal"; 
+import CustomizeNewItemForm from "./modals/CustomizeNewItemForm"; // 🟢 use this one!
 
 const MenuSection = () => {
   const categories = Array.from(new Set(menuItems.map((item) => item.category)))
@@ -112,7 +112,12 @@ const MenuSection = () => {
           onClose={() => setModalOpen(false)}
           title={customizeItem?.name || "Customize Item"}
         >
-          {customizeItem && <CustomizeItemForm item={customizeItem} onClose={() => setModalOpen(false)} />}
+          {customizeItem && (
+            <CustomizeNewItemForm
+              item={customizeItem}
+              onClose={() => setModalOpen(false)}
+            />
+          )}
         </SelectionModal>
       </div>
     </section>

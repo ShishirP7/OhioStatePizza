@@ -1,164 +1,58 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ShoppingCart, X } from "lucide-react";
+import { useCart } from "@/app/context/cartContext";
+import SelectionModal from "./modals/selectionModal";
+import EditCartItemForm from "./EditCartItemForm"; // 🟢 Use the new edit-only form
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const CartDrawer = ({ fullPage = false }) => {
+  const { cartItems, updateCartItem, removeFromCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
-  const [mode, setMode] = useState("delivery");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
-  const [pickupStore, setPickupStore] = useState("325 E Hudson St");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [customizeItem, setCustomizeItem] = useState(null);
+  const [customizeIndex, setCustomizeIndex] = useState(null);
 
   const toggleCart = () => setIsOpen(!isOpen);
 
-  const storeLocations = [
-    "325 E Hudson St, Columbus, OH 43202",
-    "819 N Nelson Rd, Columbus, OH 43219",
-  ];
+  const handleCustomize = (item, index) => {
+    setCustomizeItem(item);
+    setCustomizeIndex(index);
+    setModalOpen(true);
+  };
 
-  const cartItems = [
-    {
-      title: "Pizza with Buffalo Chicken",
-      description: '16" (8 Slices) + Regular Crust',
-      price: "$27.50",
-    },
-    {
-      title: "Mozzarella Sticks",
-      description: "Appetizer",
-      price: "$8.00",
-    },
-    {
-      title: "Caesar Salad",
-      description: "Small",
-      price: "$8.50",
-    },
-  ];
-
-  const content = (
-    <div
-      className={`flex flex-col justify-between bg-white shadow-lg transition-transform duration-300 ${
-        fullPage
-          ? "w-full h-full rounded-none"
-          : "fixed top-0 right-0 h-full w-full sm:w-[400px] z-50"
-      }`}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-        <h2 className="font-bold text-xl text-gray-800">Your Cart</h2>
-        {!fullPage && (
-          <button onClick={toggleCart} aria-label="Close Cart">
-            <X className="w-6 h-6 text-gray-500 hover:text-gray-700" />
-          </button>
-        )}
-      </div>
-
-      {/* Delivery or Pickup Mode */}
-      <div className="flex justify-center gap-4 px-6 py-3 border-b border-gray-100">
-        <button
-          className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-            mode === "delivery"
-              ? "bg-red-600 text-white"
-              : "bg-gray-100 text-gray-700"
-          }`}
-          onClick={() => setMode("delivery")}
-        >
-          Delivery
-        </button>
-        <button
-          className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-            mode === "pickup"
-              ? "bg-red-600 text-white"
-              : "bg-gray-100 text-gray-700"
-          }`}
-          onClick={() => setMode("pickup")}
-        >
-          Pickup
-        </button>
-      </div>
-
-      {/* Address Section */}
-      <div className="px-6 py-4 border-b border-gray-100 space-y-3 text-sm">
-        {mode === "delivery" ? (
-          <div>
-            <label className="block font-semibold text-gray-700 mb-1">
-              Delivery Address
-            </label>
-            <input
-              type="text"
-              value={deliveryAddress}
-              onChange={(e) => setDeliveryAddress(e.target.value)}
-              placeholder="Enter your address"
-              className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-            />
-          </div>
-        ) : (
-          <div>
-            <label className="block font-semibold text-gray-700 mb-2">
-              Select Pickup Location
-            </label>
-            <div className="space-y-2">
-              {storeLocations.map((store, index) => (
-                <label
-                  key={index}
-                  className="flex items-start gap-2 cursor-pointer"
-                >
-                  <input
-                    type="radio"
-                    name="pickupStore"
-                    value={store}
-                    checked={pickupStore === store}
-                    onChange={(e) => setPickupStore(e.target.value)}
-                    className="mt-1 accent-red-600"
-                  />
-                  <span className="text-gray-700">{store}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Cart Items */}
-      <div className="p-6 space-y-6 overflow-y-auto flex-1">
-        {cartItems.map((item, idx) => (
-          <div key={idx} className="border-b pb-4">
-            <div className="flex justify-between items-center">
-              <p className="font-semibold text-gray-800">{item.title}</p>
-              <span className="font-bold text-gray-900">{item.price}</span>
-            </div>
-            <p className="text-sm text-gray-500 mt-0.5">{item.description}</p>
-            <div className="flex gap-4 mt-1 text-sm underline text-red-600">
-              <Link href={"/mycart"}>
-                <button>Customize Now</button>
-              </Link>
-              <button>Remove</button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Checkout */}
-      <div className="p-6 border-t border-gray-200">
-        <button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">
-          Proceed to Checkout
-        </button>
-      </div>
-    </div>
-  );
-
-  if (fullPage) {
-    return <div className="w-full max-w-2xl mx-auto my-8">{content}</div>;
-  }
+  // Bounce animation
+  const [bounce, setBounce] = useState(false);
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      setBounce(true);
+      const timeout = setTimeout(() => setBounce(false), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [cartItems.length]);
 
   return (
     <>
       {/* Floating Cart Button */}
       <button
         onClick={toggleCart}
-        className="fixed bottom-6 right-6 bg-red-600 text-white p-3 rounded-full shadow-xl z-50 hover:bg-red-700 transition-all duration-300"
+        className="fixed bottom-6 right-6 bg-red-600 text-white p-3 rounded-full shadow-xl z-50 hover:bg-red-700 transition-all duration-300 "
         aria-label="Open Cart"
       >
-        <ShoppingCart className="w-6 h-6" />
+        <motion.div
+          animate={bounce ? { scale: [1, 1.2, 0.9, 1] } : {}}
+          transition={{ duration: 0.4 }}
+        >
+          <ShoppingCart className="w-6 h-6" />
+        </motion.div>
+
+        {/* Red badge for item count */}
+        {cartItems.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+            {cartItems.length}
+          </span>
+        )}
       </button>
 
       {/* Overlay */}
@@ -171,12 +65,76 @@ const CartDrawer = ({ fullPage = false }) => {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-50 shadow-lg transform transition-transform duration-300 flex flex-col justify-between ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-50 shadow-lg transform transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {content}
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
+            <h2 className="font-bold text-xl text-gray-800">Your Cart</h2>
+            <button onClick={toggleCart} aria-label="Close Cart">
+              <X className="w-6 h-6 text-gray-500 hover:text-gray-700" />
+            </button>
+          </div>
+
+          {/* Cart Items */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {cartItems.length === 0 ? (
+              <p className="text-gray-600 text-center">Your cart is empty</p>
+            ) : (
+              cartItems.map((item, idx) => (
+                <div key={idx} className="border-b pb-4">
+                  <div className="flex justify-between items-center">
+                    <p className="font-semibold text-gray-800">{item.name}</p>
+                    <span className="font-bold text-gray-900">
+                      ${item.totalPrice}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Quantity: {item.quantity}
+                  </p>
+                  <div className="flex gap-4 mt-1 text-sm underline text-red-600">
+                    <button onClick={() => handleCustomize(item, idx)}>
+                      Customize
+                    </button>
+                    <button
+                      onClick={() => removeFromCart(item.cartId)}
+                      className="underline text-red-600 text-sm"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Checkout Button */}
+          <div className="p-6 border-t border-gray-200 flex-shrink-0">
+            <Link href="/mycart/summary">
+              <button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+                Proceed to Checkout
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
+
+      {/* Modal for editing cart item */}
+      <SelectionModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={customizeItem?.name || "Customize Item"}
+      >
+        {customizeItem && (
+          <EditCartItemForm
+            item={customizeItem}
+            index={customizeIndex}
+            onClose={() => setModalOpen(false)}
+          />
+        )}
+      </SelectionModal>
     </>
   );
 };
