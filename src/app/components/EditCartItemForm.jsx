@@ -8,21 +8,52 @@ export default function EditCartItemForm({ item, onClose }) {
   const [selectedOptions, setSelectedOptions] = useState(item.selectedOptions || {});
   const [totalPrice, setTotalPrice] = useState(item.price);
 
-  const optionKeys = Object.keys(item.options || {});
+  const optionKeys = Object.keys(item.options || {}).filter(
+    (key) =>
+      item.options[key]?.values &&
+      Array.isArray(item.options[key].values) &&
+      item.options[key].values.length > 0
+  );
+
   const [activeTab, setActiveTab] = useState(optionKeys[0] || "");
 
   const toggleOption = (optionType, label) => {
-    setSelectedOptions((prev) => ({
-      ...prev,
-      [optionType]: label,
-    }));
+    const isMultiple = item.options[optionType]?.isMultiple;
+
+    setSelectedOptions((prev) => {
+      const current = prev[optionType] || [];
+      if (isMultiple) {
+        // Toggle for multi-select
+        return {
+          ...prev,
+          [optionType]: current.includes(label)
+            ? current.filter((l) => l !== label)
+            : [...current, label]
+        };
+      } else {
+        // Single-select
+        return {
+          ...prev,
+          [optionType]: label
+        };
+      }
+    });
   };
 
   useEffect(() => {
     let total = item.price;
-    for (const [key, label] of Object.entries(selectedOptions)) {
-      const opt = item.options[key]?.find((o) => o.label === label);
-      if (opt) total += opt.priceModifier;
+    for (const [key, selection] of Object.entries(selectedOptions)) {
+      const values = item.options[key]?.values || [];
+
+      if (Array.isArray(selection)) {
+        selection.forEach((label) => {
+          const match = values.find((v) => v.label === label);
+          if (match) total += match.priceModifier;
+        });
+      } else {
+        const match = values.find((v) => v.label === selection);
+        if (match) total += match.priceModifier;
+      }
     }
     setTotalPrice((total * quantity).toFixed(2));
   }, [selectedOptions, quantity, item]);
@@ -32,7 +63,7 @@ export default function EditCartItemForm({ item, onClose }) {
       ...item,
       quantity,
       selectedOptions,
-      totalPrice,
+      totalPrice
     };
     updateCartItem(item.cartId, updatedItem);
     onClose();
@@ -81,19 +112,25 @@ export default function EditCartItemForm({ item, onClose }) {
           </div>
 
           <div>
-            {item.options[activeTab]?.map((opt) => (
-              <button
-                key={opt.label}
-                className={`px-2 py-1 border rounded mr-2 mb-2 ${
-                  selectedOptions[activeTab] === opt.label
-                    ? "bg-red-600 text-white"
-                    : "bg-gray-100"
-                }`}
-                onClick={() => toggleOption(activeTab, opt.label)}
-              >
-                {opt.label} {opt.priceModifier ? `(+$${opt.priceModifier})` : ""}
-              </button>
-            ))}
+            {item.options[activeTab]?.values?.map((opt) => {
+              const isMultiple = item.options[activeTab]?.isMultiple;
+              const selected = selectedOptions[activeTab];
+              const isSelected = isMultiple
+                ? selected?.includes(opt.label)
+                : selected === opt.label;
+
+              return (
+                <button
+                  key={opt.label}
+                  className={`px-2 py-1 border rounded mr-2 mb-2 ${
+                    isSelected ? "bg-red-600 text-white" : "bg-gray-100"
+                  }`}
+                  onClick={() => toggleOption(activeTab, opt.label)}
+                >
+                  {opt.label} {opt.priceModifier ? `(+$${opt.priceModifier})` : ""}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
