@@ -32,69 +32,72 @@ const slides = [
   },
 ];
 
-const Hero = () => {
+const Hero = ({ onOrderNowClick }) => {
   return (
     <div className="relative w-full h-screen">
       {/* Centered Logo */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
-          <img
-            src="https://ohiostatepizzas.com/wp-content/uploads/2025/05/Ohio-state-pizza-logo.webp"
-            alt="Ohio State Pizza Logo"
-            className="h-32 w-auto object-contain"
-          />
-        </div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
+        <img
+          src="https://ohiostatepizzas.com/wp-content/uploads/2025/05/Ohio-state-pizza-logo.webp"
+          alt="Ohio State Pizza Logo"
+          className="h-32 w-auto object-contain"
+        />
+      </div>
 
-        {/* Grid */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 h-full">
-          {slides.map((slide, idx) => {
-            const isMobileHidden = idx !== 0 ? "hidden md:flex" : "flex";
+      {/* Grid */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 h-full">
+        {slides.map((slide, idx) => {
+          const isMobileHidden = idx !== 0 ? "hidden md:flex" : "flex";
 
-            return (
-              <div
-                key={idx}
-                className={`relative ${slide.blendColor} text-white h-full overflow-hidden flex-col ${isMobileHidden}`}
-              >
-                {/* Blended Background */}
-                <div className="absolute inset-0 z-0">
-                  <div
-                    className="absolute inset-0 bg-cover object-bottom bg-no-repeat opacity-50  "
-                    style={{ backgroundImage: `url(${slide.image})` }}
-                  />
-                  <div
-                    className={`absolute inset-0 ${slide.blendColor} opacity-15 mix-blend-multiply`}
-                  />
-                </div>
+          return (
+            <div
+              key={idx}
+              className={`relative ${slide.blendColor} text-white h-full overflow-hidden flex-col ${isMobileHidden}`}
+            >
+              {/* Blended Background */}
+              <div className="absolute inset-0 z-0">
+                <div
+                  className="absolute inset-0 bg-cover object-bottom bg-no-repeat opacity-50  "
+                  style={{ backgroundImage: `url(${slide.image})` }}
+                />
+                <div
+                  className={`absolute inset-0 ${slide.blendColor} opacity-15 mix-blend-multiply`}
+                />
+              </div>
 
-                {/* Text Content */}
-                <div className="relative z-30 flex-1 flex flex-col justify-center  text-left p-20">
-                  <div className="flex flex-col justify-center">
-                    <h3 className="text-2xl font-[cursive] mb-3 drop-shadow-xl text-white">
-                      {slide.subtitle}
-                    </h3>
-                    <h1 className="text-6xl mb-2 drop-shadow-xl text-white font-sans font-extrabold">
-                      {slide.title}
-                    </h1>
-                    <p className="text-lg font-semibold mb-1 drop-shadow text-white">
-                      {slide.details}
-                    </p>
-                    <p
-                      className={`text-5xl font-bold drop-shadow-xl ${slide.priceColor}`}
+              {/* Text Content */}
+              <div className="relative z-30 flex-1 flex flex-col justify-center  text-left p-20">
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-2xl font-[cursive] mb-3 drop-shadow-xl text-white">
+                    {slide.subtitle}
+                  </h3>
+                  <h1 className="text-6xl mb-2 drop-shadow-xl text-white font-sans font-extrabold">
+                    {slide.title}
+                  </h1>
+                  <p className="text-lg font-semibold mb-1 drop-shadow text-white">
+                    {slide.details}
+                  </p>
+                  <p
+                    className={`text-5xl font-bold drop-shadow-xl ${slide.priceColor}`}
+                  >
+                    {slide.price}
+                  </p>
+                  {slide.title.includes("Pizzas") && (
+                    <button
+                      onClick={onOrderNowClick}
+                      className="mt-4 font-bold underline underline-offset-4 text-black bg-white px-4 py-2 rounded shadow-lg hover:bg-amber-300 transition-colors duration-100 hover:cursor-pointer"
                     >
-                      {slide.price}
-                    </p>
-                    {slide.title.includes("Pizzas") && (
-                      <button className="mt-4 font-bold underline underline-offset-4 text-black bg-white px-4 py-2 rounded shadow-lg hover:bg-amber-300 transition-colors duration-100 hover:cursor-pointer">
-                        Order Now
-                      </button>
-                    )}
-                  </div>
+                      Order Now
+                    </button>
+                  )}
                 </div>
               </div>
-            );
-          })}
-        </div>
-        {/* Torn Edge Effect */}
-        <div className="absolute bottom-0 left-0 w-full h-[60px] bg-[url('/tore.png')] bg-repeat-x bg-bottom bg-contain z-40 pointer-events-none" />
+            </div>
+          );
+        })}
+      </div>
+      {/* Torn Edge Effect */}
+      <div className="absolute bottom-0 left-0 w-full h-[60px] bg-[url('/tore.png')] bg-repeat-x bg-bottom bg-contain z-40 pointer-events-none" />
     </div>
   );
 };
