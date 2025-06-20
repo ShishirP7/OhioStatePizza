@@ -27,7 +27,6 @@ export default function RootLayout({ children }) {
       >
         {/* <Navbar /> */}
         <CartProvider>{children}</CartProvider>
-        <Footer />
       </body>
     </html>
   );

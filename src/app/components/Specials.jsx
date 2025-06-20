@@ -71,11 +71,29 @@ const Specials = () => {
           </div>
         </ScrollReveal>
 
-        {/* Show Customize Form when combo is selected */}
+        {/* Modal for customizing combo */}
         {selectedCombo && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-lg max-w-md w-full">
-              <CustomizeComboForm item={selectedCombo} onClose={() => setSelectedCombo(null)} />
+          <div
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+            onClick={() => setSelectedCombo(null)} // Close on outside click
+          >
+            <div
+              className="bg-white p-6 rounded-lg max-w-md w-full relative"
+              onClick={(e) => e.stopPropagation()} // Prevent modal click from closing
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedCombo(null)}
+                className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
+              >
+                &times;
+              </button>
+
+              {/* Combo customization form */}
+              <CustomizeComboForm
+                item={selectedCombo}
+                onClose={() => setSelectedCombo(null)}
+              />
             </div>
           </div>
         )}
