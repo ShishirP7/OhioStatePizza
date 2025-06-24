@@ -6,6 +6,7 @@ import { useCart } from "@/app/context/cartContext";
 import { Dialog, Transition } from "@headlessui/react";
 import { motion } from "framer-motion";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import axios from "axios";
 
 export default function CartSummary() {
   const { cartItems, clearCart } = useCart();
@@ -31,12 +32,12 @@ export default function CartSummary() {
   //cart empty checker
 
   useEffect(() => {
-  if (cartItems.length === 0) {
-    router.push("/");
-  }
-}, [cartItems, router]);
+    if (cartItems.length === 0) {
+      router.push("/");
+    }
+  }, [cartItems, router]);
 
-// Calculate total price
+  // Calculate total price
 
   const total = cartItems
     .reduce((acc, item) => acc + parseFloat(item.totalPrice), 0)
@@ -82,8 +83,7 @@ export default function CartSummary() {
 
     setConfirmModalOpen(true);
   };
-
-  const handleFinalSubmit = () => {
+  const handleFinalSubmit = async () => {
     const orderPayload = {
       billingInfo,
       carryoutInfo,
@@ -92,20 +92,33 @@ export default function CartSummary() {
         method: "Credit Card",
         last4: "4242",
       },
-      orderTotal: total,
+      orderTotal: parseFloat(total),
     };
 
     try {
-      console.log("Order Payload:", orderPayload);
-      clearCart();
-      setConfirmModalOpen(false);
-      setModalStatus("success");
-      setModalOpen(true);
-      setTimeout(() => {
-        setModalOpen(false);
-        router.push("/orders");
-      }, 2000);
+      const res = await axios.post(
+        "http://localhost:4001/api/orders",
+        orderPayload
+      );
+
+      if (res.status === 201 || res.status === 200) {
+        setConfirmModalOpen(false);
+        setModalStatus("success");
+        setModalOpen(true);
+        setTimeout(() => {
+          clearCart(); // ✅ delay clearing until redirect
+          setModalOpen(false);
+          router.push("/orders");
+        }, 3000); // 5 seconds
+      } else {
+        throw new Error("Unexpected response from server");
+      }
     } catch (err) {
+      console.error(
+        "Order submission error:",
+        err.response?.data || err.message
+      );
+      setConfirmModalOpen(false);
       setModalStatus("error");
       setModalOpen(true);
     }
@@ -353,7 +366,9 @@ const OrderPlacedModal = ({ modalOpen, modalStatus, setModalOpen }) => (
               <Dialog.Title className="text-xl font-bold text-gray-800">
                 Order Placed Successfully!
               </Dialog.Title>
-              <p className="text-gray-600">Redirecting to your orders page...</p>
+              <p className="text-gray-600">
+                Redirecting to your orders page...
+              </p>
             </>
           ) : (
             <>
