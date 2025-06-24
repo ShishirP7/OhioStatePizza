@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { CartProvider } from "./context/cartContext";
+import CartDrawer from "./components/CartDraw";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -9,9 +9,7 @@ export default function MyCart() {
 
   // Static cart data
   const cartData = [
-    { id: 1, quantity: 1 },
-    { id: 2, quantity: 1 },
-    { id: 3, quantity: 2 },
+   
   ];
 
   // Build full item data

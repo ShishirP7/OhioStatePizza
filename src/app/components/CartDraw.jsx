@@ -112,11 +112,20 @@ const CartDrawer = ({ fullPage = false }) => {
 
           {/* Checkout Button */}
           <div className="p-6 border-t border-gray-200 flex-shrink-0">
-            <Link href="/mycart/summary">
-              <button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+            {cartItems.length > 0 ? (
+              <Link href="/mycart/summary">
+                <button className="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+                  Proceed to Checkout
+                </button>
+              </Link>
+            ) : (
+              <button
+                disabled
+                className="w-full bg-gray-400 text-white py-3 rounded-lg font-semibold cursor-not-allowed"
+              >
                 Proceed to Checkout
               </button>
-            </Link>
+            )}
           </div>
         </div>
       </div>
