@@ -83,46 +83,40 @@ export default function CartSummary() {
 
     setConfirmModalOpen(true);
   };
-  const handleFinalSubmit = async () => {
-    const orderPayload = {
-      billingInfo,
-      carryoutInfo,
-      cartItems,
-      paymentInfo: {
-        method: "Credit Card",
-        last4: "4242",
-      },
-      orderTotal: parseFloat(total),
-    };
-
-    try {
-      const res = await axios.post(
-        "http://localhost:4001/api/orders",
-        orderPayload
-      );
-
-      if (res.status === 201 || res.status === 200) {
-        setConfirmModalOpen(false);
-        setModalStatus("success");
-        setModalOpen(true);
-        setTimeout(() => {
-          clearCart(); // ✅ delay clearing until redirect
-          setModalOpen(false);
-          router.push("/orders");
-        }, 3000); // 5 seconds
-      } else {
-        throw new Error("Unexpected response from server");
-      }
-    } catch (err) {
-      console.error(
-        "Order submission error:",
-        err.response?.data || err.message
-      );
-      setConfirmModalOpen(false);
-      setModalStatus("error");
-      setModalOpen(true);
-    }
+const handleFinalSubmit = async () => {
+  const orderPayload = {
+    billingInfo,
+    carryoutInfo,
+    cartItems,
+    paymentInfo: {
+      method: "Credit Card",
+      last4: "4242",
+    },
+    orderTotal: parseFloat(total),
   };
+
+  try {
+    const res = await axios.post("http://localhost:4001/api/orders", orderPayload);
+
+    if (res.status === 201 || res.status === 200) {
+      setConfirmModalOpen(false);
+      setModalStatus("success");
+      setModalOpen(true);
+      setTimeout(() => {
+        clearCart(); // ✅ delay clearing until redirect
+        setModalOpen(false);
+        router.push("/orders");
+      }, 5000); // 5 seconds
+    } else {
+      throw new Error("Unexpected response from server");
+    }
+  } catch (err) {
+    console.error("Order submission error:", err.response?.data || err.message);
+    setConfirmModalOpen(false);
+    setModalStatus("error");
+    setModalOpen(true);
+  }
+};
 
   const setModalError = () => {
     setModalStatus("error");
