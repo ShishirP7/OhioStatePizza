@@ -6,7 +6,7 @@ import ScrollReveal from "./ScrollReveal";
 import SelectionModal from "./modals/selectionModal";
 import CustomizeNewItemForm from "./modals/CustomizeNewItemForm";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://api.ohiostatepizzas.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.ohiostatepizzas.com";
 
 const MenuSection = () => {
   const [menuItems, setMenuItems] = useState([]);
