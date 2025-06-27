@@ -11,7 +11,7 @@ const Specials = () => {
   useEffect(() => {
     const fetchCombos = async () => {
       try {
-        const res = await fetch("http://66.94.97.165:4001/api/specials");
+        const res = await fetch("http://api.ohiostatepizzas.com/api/specials");
         const data = await res.json();
         setSpecials(data);
       } catch (err) {
