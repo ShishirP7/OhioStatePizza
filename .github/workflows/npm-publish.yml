@@ -39,7 +39,6 @@ jobs:
 
             echo "⚒️ Building the app..."
             npm run build
-
             # Check if PM2 is installed
             if ! command -v pm2 &> /dev/null; then
               echo "⚠️ PM2 not found. Installing..."
