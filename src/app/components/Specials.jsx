@@ -11,11 +11,11 @@ const Specials = () => {
   useEffect(() => {
     const fetchCombos = async () => {
       try {
-        const res = await fetch("http://localhost:4001/api/specials");
+        const res = await fetch("http://66.94.97.165:4001/api/specials");
         const data = await res.json();
         setSpecials(data);
       } catch (err) {
-        console.error("Failed to fetch combos:", err);
+        console.log("Failed to fetch combos:", err);
       }
     };
     fetchCombos();

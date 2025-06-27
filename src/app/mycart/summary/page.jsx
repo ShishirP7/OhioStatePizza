@@ -96,27 +96,31 @@ const handleFinalSubmit = async () => {
   };
 
   try {
-    const res = await axios.post("http://localhost:4001/api/orders", orderPayload);
+    const res = await axios.post("http://66.94.97.165:4001/api/orders", orderPayload);
 
     if (res.status === 201 || res.status === 200) {
+      // ✅ Save customer email to localStorage
+      localStorage.setItem("customerEmail", billingInfo.email);
+
       setConfirmModalOpen(false);
       setModalStatus("success");
       setModalOpen(true);
       setTimeout(() => {
         clearCart(); // ✅ delay clearing until redirect
         setModalOpen(false);
-        router.push("/orders");
-      }, 5000); // 5 seconds
+        router.push("http://localhost:3000/orders");
+      }, 5000);
     } else {
       throw new Error("Unexpected response from server");
     }
   } catch (err) {
-    console.error("Order submission error:", err.response?.data || err.message);
+    console.log("Order submission error:", err.response?.data || err.message);
     setConfirmModalOpen(false);
     setModalStatus("error");
     setModalOpen(true);
   }
 };
+
 
   const setModalError = () => {
     setModalStatus("error");

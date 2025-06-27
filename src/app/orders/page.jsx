@@ -1,65 +1,51 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-
-  const sampleOrders = [
-    {
-      id: "ORD123",
-      date: "June 20, 2025",
-      time: "12:45 PM",
-      total: "29.99",
-      status: "Confirmed",
-      address: "44 S Central Ave, Fairborn, OH 45324",
-      items: [
-        {
-          name: "Pepperoni Pizza",
-          quantity: 1,
-          selectedOptions: {
-            size: "Large",
-            crust: "Thin",
-            addOns: ["Extra Cheese"]
-          }
-        },
-        {
-          name: "Garlic Bread",
-          quantity: 2
-        }
-      ]
-    },
-    {
-      id: "ORD124",
-      date: "June 21, 2025",
-      time: "2:10 PM",
-      total: "15.50",
-      status: "Preparing",
-      address: "819 N Nelson Rd, Columbus, OH 43219",
-      items: [
-        {
-          name: "Veggie Pizza",
-          quantity: 1,
-          selectedOptions: {
-            size: "Medium",
-            crust: "Stuffed"
-          }
-        }
-      ]
-    }
-  ];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
-    // axios.get("/api/orders").then((res) => setOrders(res.data));
-    setOrders(sampleOrders);
+    const savedEmail = localStorage.getItem("customerEmail");
+    if (savedEmail) {
+      setUserEmail(savedEmail);
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!userEmail) return;
+      try {
+        const res = await axios.get(
+          `http://66.94.97.165:4001/api/orders/customer/${encodeURIComponent(userEmail)}`
+        );
+        setOrders(res.data.data);
+      } catch (err) {
+        console.error("Failed to fetch orders:", err);
+        setError("Could not load orders.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [userEmail]);
 
   return (
     <div className="min-h-screen bg-white p-6">
       <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Order History</h1>
       <div className="max-w-3xl mx-auto space-y-6">
-        {orders.length === 0 ? (
+        {loading ? (
+          <p className="text-center text-gray-500">Loading your orders...</p>
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
+        ) : orders.length === 0 ? (
           <p className="text-center text-gray-500">You haven’t placed any orders yet.</p>
         ) : (
           orders.map((order) => <OrderCard key={order.id} order={order} />)
@@ -70,34 +56,41 @@ const Orders = () => {
 };
 
 const OrderCard = ({ order }) => {
+  const date = new Date(order.createdAt);
+  const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+  const formattedTime = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
   return (
     <div className="border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h2 className="text-lg font-semibold text-gray-800">Order #{order.id}</h2>
-          <p className="text-sm text-gray-500">Placed on {order.date} at {order.time}</p>
+          <p className="text-sm text-gray-500">Placed on {formattedDate} at {formattedTime}</p>
         </div>
         <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-          order.status === "Confirmed" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+          order.status === "completed"
+            ? "bg-green-100 text-green-700"
+            : order.status === "cancelled"
+            ? "bg-red-100 text-red-700"
+            : "bg-yellow-100 text-yellow-700"
         }`}>
-          {order.status}
+          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
         </span>
       </div>
       <div className="text-sm text-gray-700">
-        <p className="mb-2"><span className="font-medium">Pickup Location:</span> {order.address}</p>
+        <p className="mb-2"><span className="font-medium">Pickup Location:</span> {order.carryoutInfo.address}</p>
         <div className="mb-3">
           <p className="font-medium mb-1">Items Ordered:</p>
           <ul className="list-disc list-inside space-y-1">
-            {order.items.map((item, idx) => (
+            {order.cartItems.map((item, idx) => (
               <li key={idx}>
                 {item.quantity}x {item.name}{" "}
                 {item.selectedOptions && (
                   <span className="text-gray-500">
                     (
-                    {item.selectedOptions.size && `Size: ${item.selectedOptions.size}, `}
-                    {item.selectedOptions.crust && `Crust: ${item.selectedOptions.crust}, `}
-                    {item.selectedOptions.addOns && item.selectedOptions.addOns.length > 0 &&
-                      `Add-ons: ${item.selectedOptions.addOns.join(", ")}`}
+                    {Object.entries(item.selectedOptions).map(([key, value], index) => (
+                      <span key={index}>{key}: {Array.isArray(value) ? value.join(", ") : value}{index < Object.entries(item.selectedOptions).length - 1 ? ", " : ""}</span>
+                    ))}
                     )
                   </span>
                 )}
@@ -106,7 +99,7 @@ const OrderCard = ({ order }) => {
           </ul>
         </div>
         <div className="text-right text-base font-semibold text-gray-900">
-          Total Paid: ${order.total}
+          Total Paid: ${order.orderTotal.toFixed(2)}
         </div>
       </div>
     </div>
