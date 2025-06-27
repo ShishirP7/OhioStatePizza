@@ -10,7 +10,7 @@ export default function SettingsButton() {
 
   // Load stored values on mount
   useEffect(() => {
-    setZipCode(localStorage.getItem("userZipCode") || "");
+    setZipCode(localStorage.getItem("userLocationZip") || "");
     setEmail(localStorage.getItem("customerEmail") || "");
   }, []);
 

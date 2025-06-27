@@ -28,11 +28,17 @@ export default function CartSummary() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalStatus, setModalStatus] = useState("success");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const savedEmail = localStorage.getItem("customerEmail");
+  const [savedEmail, setSavedEmail] = useState(null);
 
   //cart empty checker
 
   useEffect(() => {
+    const storedEmail = localStorage.getItem("customerEmail");
+    if (storedEmail) {
+      setBillingInfo((prev) => ({ ...prev, email: storedEmail }));
+      setSavedEmail(storedEmail);
+    }
+
     if (cartItems.length === 0 && !savedEmail) {
       router.push("/");
     }
@@ -151,6 +157,7 @@ export default function CartSummary() {
           handleBillingChange={handleBillingChange}
           total={total}
           handlePlaceOrder={handlePlaceOrder}
+          savedEmail={savedEmail}
         />
       </div>
 
@@ -291,12 +298,13 @@ const BillingForm = ({
   handleBillingChange,
   total,
   handlePlaceOrder,
+  savedEmail
 }) => (
   <div className="bg-white rounded shadow p-6 space-y-4">
     <h2 className="text-lg font-bold text-gray-900">Billing Info</h2>
 
     <div className="space-y-3">
-      {["firstName", "lastName", "phone", "email"].map((field) => (
+      {["firstName", "lastName", "phone"].map((field) => (
         <input
           key={field}
           name={field}
@@ -312,6 +320,18 @@ const BillingForm = ({
           required
         />
       ))}
+      <input
+        name="email"
+        type="email"
+        placeholder="Email"
+        value={billingInfo.email}
+        onChange={handleBillingChange}
+        disabled={!!savedEmail}
+        className={`w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500 ${
+          savedEmail ? "bg-gray-100 cursor-not-allowed" : ""
+        }`}
+        required
+      />
     </div>
 
     <h2 className="text-lg font-bold text-gray-900 mt-6">Order Overview</h2>

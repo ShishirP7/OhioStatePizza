@@ -44,6 +44,7 @@ export default function Home() {
   }
 
   // 📍 If no location set, show selector
+
   if (!userLocation) {
     return <LocationSelector onLocationSelected={handleLocationSelected} />;
   }
