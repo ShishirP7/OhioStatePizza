@@ -104,7 +104,7 @@ export default function CartSummary() {
 
     try {
       const res = await axios.post(
-        "https://66.94.97.165/api/orders",
+        "http://66.94.97.165/api/orders",
         orderPayload
       );
 
