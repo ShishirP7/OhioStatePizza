@@ -47,8 +47,8 @@ jobs:
               sudo npm install -g pm2
             fi
 
-            echo "🚀 Starting/restarting PM2 app..."
-            pm2 restart next-client || pm2 start "npm run start" --name next-client
+            echo "🚀 Starting/restarting PM2 app on port 3005..."
+            pm2 restart next-client || PORT=3005 pm2 start "npm run start" --name next-client
 
             echo "🧪 Validating and restarting Nginx..."
             sudo nginx -t && sudo systemctl restart nginx
