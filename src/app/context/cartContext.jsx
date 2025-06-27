@@ -19,9 +19,15 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Fallback-safe unique ID generator
+  const generateId = () =>
+    (typeof crypto !== "undefined" && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+
   // Add item to cart with unique cartId
   const addToCart = (item) => {
-    const cartItemWithId = { ...item, cartId: crypto.randomUUID() };
+    const cartItemWithId = { ...item, cartId: generateId() };
     setCartItems((prev) => [...prev, cartItemWithId]);
   };
 
