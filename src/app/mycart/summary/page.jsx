@@ -28,11 +28,12 @@ export default function CartSummary() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalStatus, setModalStatus] = useState("success");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const savedEmail = localStorage.getItem("customerEmail");
 
   //cart empty checker
 
   useEffect(() => {
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 && !savedEmail) {
       router.push("/");
     }
   }, [cartItems, router]);
@@ -83,44 +84,45 @@ export default function CartSummary() {
 
     setConfirmModalOpen(true);
   };
-const handleFinalSubmit = async () => {
-  const orderPayload = {
-    billingInfo,
-    carryoutInfo,
-    cartItems,
-    paymentInfo: {
-      method: "Credit Card",
-      last4: "4242",
-    },
-    orderTotal: parseFloat(total),
-  };
+  const handleFinalSubmit = async () => {
+    const orderPayload = {
+      billingInfo,
+      carryoutInfo,
+      cartItems,
+      paymentInfo: {
+        method: "Credit Card",
+        last4: "4242",
+      },
+      orderTotal: parseFloat(total),
+    };
 
-  try {
-    const res = await axios.post("http://66.94.97.165:4001/api/orders", orderPayload);
+    try {
+      const res = await axios.post(
+        "http://66.94.97.165:4001/api/orders",
+        orderPayload
+      );
 
-    if (res.status === 201 || res.status === 200) {
-      // ✅ Save customer email to localStorage
-      localStorage.setItem("customerEmail", billingInfo.email);
+      if (res.status === 201 || res.status === 200) {
+        localStorage.setItem("customerEmail", billingInfo.email);
+        setConfirmModalOpen(false);
+        setModalStatus("success");
+        setModalOpen(true);
 
+        setTimeout(() => {
+          router.push("/orders"); // ✅ relative path
+          clearCart();
+          setModalOpen(false);
+        }, 5000);
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err) {
+      console.log("Order submission error:", err.response?.data || err.message);
       setConfirmModalOpen(false);
-      setModalStatus("success");
+      setModalStatus("error");
       setModalOpen(true);
-      setTimeout(() => {
-        clearCart(); // ✅ delay clearing until redirect
-        setModalOpen(false);
-        router.push("http://localhost:3000/orders");
-      }, 5000);
-    } else {
-      throw new Error("Unexpected response from server");
     }
-  } catch (err) {
-    console.log("Order submission error:", err.response?.data || err.message);
-    setConfirmModalOpen(false);
-    setModalStatus("error");
-    setModalOpen(true);
-  }
-};
-
+  };
 
   const setModalError = () => {
     setModalStatus("error");
