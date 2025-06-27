@@ -38,7 +38,7 @@ const Hero = ({ onOrderNowClick }) => {
       {/* Centered Logo */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
         <img
-          src="https://ohiostatepizzas.com/wp-content/uploads/2025/05/Ohio-state-pizza-logo.webp"
+          src="/logo1.png"
           alt="Ohio State Pizza Logo"
           className="h-32 w-auto object-contain"
         />

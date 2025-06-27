@@ -36,7 +36,7 @@ const Footer = () => {
 
           <div>
             <h4 className="font-bold text-lg mb-3">Book a table</h4>
-            <p className="text-sm text-gray-300">Dogfood och Sliders foodtruck.</p>
+            <p className="text-sm text-gray-300">food och Sliders foodtruck.</p>
             <p className="text-sm text-gray-300">Under Om oss kan ni läsa</p>
             <p className="text-red-500 text-lg font-semibold mt-2">(850) 435-4155</p>
           </div>
