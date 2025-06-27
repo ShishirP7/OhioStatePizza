@@ -36,7 +36,8 @@ export default function SettingsButton() {
           className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
         >
           <FiSettings className="text-lg" />
-          Settings
+            <p className=" hidden lg:flex">Settings</p>
+          
         </button>
 
         {hasEmail && (
@@ -45,7 +46,7 @@ export default function SettingsButton() {
             className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
           >
             <PiCookingPotFill className="text-lg" />
-            Orders
+            <p className=" hidden lg:flex">Orders</p>
           </Link>
         )}
       </div>
@@ -61,7 +62,10 @@ export default function SettingsButton() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 backdrop-blur-sm" aria-hidden="true" />
+            <div
+              className="fixed inset-0 backdrop-blur-sm"
+              aria-hidden="true"
+            />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto text-black">

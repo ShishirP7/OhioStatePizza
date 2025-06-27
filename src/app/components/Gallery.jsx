@@ -9,6 +9,9 @@ const burgers = [
   "https://images.unsplash.com/photo-1550547660-d9450f859349",
   "https://images.unsplash.com/photo-1550547660-d9450f859349",
   "https://images.unsplash.com/photo-1550547660-d9450f859349",
+  "https://images.unsplash.com/photo-1550547660-d9450f859349",
+  "https://images.unsplash.com/photo-1550547660-d9450f859349",
+  "https://images.unsplash.com/photo-1550547660-d9450f859349",
 ];
 
 const BurgerGallery = () => {
@@ -20,35 +23,22 @@ const BurgerGallery = () => {
             Gallery
           </h4>
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
-            Burger gallery
+            Burger Gallery
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 place-items-center">
-            <img
-              src={burgers[0]}
-              alt="Burger 1"
-              className="rounded-xl shadow-md object-cover w-full h-56 transition duration-300 ease-in-out hover:scale-110"
-            />
-            <img
-              src={burgers[1]}
-              alt="Burger 2"
-              className="rounded-xl shadow-md object-cover w-full h-72 sm:row-span-2 transition duration-300 ease-in-out hover:scale-110"
-            />
-            <img
-              src={burgers[2]}
-              alt="Burger 3"
-              className="rounded-xl shadow-md object-cover w-full h-56 transition duration-300 ease-in-out hover:scale-110"
-            />
-            <img
-              src={burgers[3]}
-              alt="Burger 4"
-              className="rounded-xl shadow-md object-cover w-full h-72 sm:row-span-2 transition duration-300 ease-in-out hover:scale-110"
-            />
-            <img
-              src={burgers[4]}
-              alt="Burger 5"
-              className="rounded-xl shadow-md object-cover w-full h-56 transition duration-300 ease-in-out hover:scale-110"
-            />
+          {/* Masonry-style grid */}
+          <div className="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+            {burgers.map((src, index) => (
+              <img
+                key={index}
+                src={src}
+                alt={`Burger ${index + 1}`}
+                className="rounded-xl shadow-md w-full mb-4 object-cover hover:scale-105 transition-transform duration-300 ease-in-out"
+                style={{
+                  height: index % 3 === 0 ? '300px' : index % 3 === 1 ? '400px' : '250px',
+                }}
+              />
+            ))}
           </div>
         </ScrollReveal>
       </div>
