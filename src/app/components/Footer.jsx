@@ -14,7 +14,7 @@ const Footer = () => {
         {/* Logo */}
         <div className="text-center mb-12">
           <img
-            src="https://ohiostatepizzas.com/wp-content/uploads/2025/05/ohio-state-pizza-footer-logo.webp"
+            src="./footer.png"
             alt="Ohio State Pizza"
             width={160}
             height={80}
@@ -55,9 +55,9 @@ const Footer = () => {
 
         <hr className="border-gray-700 my-8" />
 
-        <p className="text-xs text-center text-gray-400">
-          © 2025 © 2019, Gloreya. All rights reserved
-        </p>
+        {/* <p className="text-xs text-center text-gray-400"> */}
+          {/* © 2025 © 2019, Gloreya. All rights reserved */}
+        {/* </p> */}
       </div>
     </footer>
   );
