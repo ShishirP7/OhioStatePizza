@@ -1,9 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
 import { CartProvider } from "./context/cartContext";
-import CartDrawer from "./components/CartDraw";
 import SettingsButton from "./components/SettingsButton";
 
 const geistSans = Geist({
@@ -22,10 +19,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
-
-  
-
   return (
     <html lang="en">
       <body
@@ -34,7 +27,6 @@ export default function RootLayout({ children }) {
         <CartProvider>
           <div className="fixed top-4 right-4 z-50">
             <SettingsButton />
-            {/* <CartDrawer /> */}
           </div>
           {children}
         </CartProvider>

@@ -1,33 +1,54 @@
 "use client";
+
 import { useState, useEffect, Fragment } from "react";
+import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
-import { FiSettings } from "react-icons/fi";
+import { FiSettings, FiShoppingBag } from "react-icons/fi"; // Added shopping bag icon
+import { PiCookingPotFill } from "react-icons/pi";
 
 export default function SettingsButton() {
   const [open, setOpen] = useState(false);
   const [zipCode, setZipCode] = useState("");
   const [email, setEmail] = useState("");
+  const [hasEmail, setHasEmail] = useState(false);
 
   // Load stored values on mount
   useEffect(() => {
-    setZipCode(localStorage.getItem("userLocationZip") || "");
-    setEmail(localStorage.getItem("customerEmail") || "");
+    const savedZip = localStorage.getItem("userLocationZip") || "";
+    const savedEmail = localStorage.getItem("customerEmail") || "";
+    setZipCode(savedZip);
+    setEmail(savedEmail);
+    setHasEmail(!!savedEmail);
   }, []);
 
   const handleSave = () => {
     localStorage.setItem("userLocationZip", zipCode);
     localStorage.setItem("customerEmail", email);
+    setHasEmail(!!email);
     setOpen(false);
   };
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow *:"
-      >
-        <FiSettings />
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
+        >
+          <FiSettings className="text-lg" />
+          Settings
+        </button>
+
+        {hasEmail && (
+          <Link
+            href="/orders"
+            className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
+          >
+            <PiCookingPotFill className="text-lg" />
+            Orders
+          </Link>
+        )}
+      </div>
 
       <Transition show={open} as={Fragment}>
         <Dialog onClose={() => setOpen(false)} className="relative z-50">
