@@ -23,7 +23,7 @@ const Orders = () => {
       if (!userEmail) return;
       try {
         const res = await axios.get(
-          `https://api.ohiostatepizzas.com/api/orders/customer/${encodeURIComponent(userEmail)}`
+          `https://66.94.97.165/api/orders/customer/${encodeURIComponent(userEmail)}`
         );
         setOrders(res.data.data);
       } catch (err) {
