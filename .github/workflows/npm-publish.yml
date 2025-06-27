@@ -32,11 +32,10 @@ jobs:
             cd $APP_DIR
 
             echo "🔄 Pulling latest changes..."
-            git reset --hard
             git pull origin main
 
             echo "📦 Installing dependencies..."
-            npm ci
+            npm i
 
             echo "⚒️ Building the app..."
             npm run build
@@ -47,7 +46,7 @@ jobs:
               sudo npm install -g pm2
             fi
 
-            echo "🚀 Starting/restarting PM2 app on port 3005..."
+            echo "🚀 Starting/restarting PM2 on port 3005..."
             pm2 restart next-client || PORT=3005 pm2 start "npm run start" --name next-client
 
             echo "🧪 Validating and restarting Nginx..."
