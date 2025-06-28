@@ -154,7 +154,7 @@ export default function CartSummary() {
   useEffect(() => {
     if (total > 0) {
       axios
-        .post("http://localhost:4001/api/payment/create-payment-intent", {
+        .post("https://66.94.97.165:4001/api/payment/create-payment-intent", {
           amount: Math.round(parseFloat(total) * 100), // Convert to cents
         })
         .then((response) => {
