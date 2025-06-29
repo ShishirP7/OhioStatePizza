@@ -82,7 +82,7 @@ export default function Home() {
         }} />
       </ScrollFade>
       <Specials />
-      {/* <TodaysSpecial /> */}
+      
       <div ref={menuRef}>
         <MenuSection />
       </div>
