@@ -7,22 +7,29 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 66.94.97.165 >> ~/.ssh/known_hosts
+
       - name: SSH and Deploy Frontend
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: "66.94.97.165"
-          username: "root"
-          password: "368j!J^?5*ou"
+          host: 66.94.97.165
+          username: root
+          password: 368j!J^?5*ou
+          envs: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
           script: |
             echo "🚀 Starting deployment..."
 
             APP_DIR="/var/www/ohio-state-client"
             REPO_URL="git@github.com:ShishirP7/OhioStatePizza.git"
 
-            # Ensure base directory exists
+            # Ensure base directory exists and owned by root
             sudo mkdir -p /var/www
-            sudo chown -R $USER:$USER /var/www
+            sudo chown -R root:root /var/www
 
             if [ ! -d "$APP_DIR" ]; then
               echo "📦 Cloning repository..."
@@ -38,16 +45,17 @@ jobs:
             npm install
 
             echo "🔧 Setting up environment..."
-            # Create .env.local with proper permissions
-            echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" > .env.local
+            # Create .env.local with secret from env var passed via GitHub Actions
+            echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" > .env.local
             chmod 644 .env.local
+
             echo "⚒️ Building the app..."
             npm run build
-            echo "🚀 Starting PM2..."
+
+            echo "🚀 Restarting PM2 process..."
             pm2 delete next-client 2>/dev/null || true
-            # Start with explicit env vars
-            PORT=3005 pm2 start "npm run start" --name next-client --env production \
-              --update-env \
-              -- "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}"
+
+            # Start app with env var NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY set in environment
+            pm2 start npm --name next-client -- run start --env production --update-env
 
             echo "✅ Frontend deployed successfully!"
