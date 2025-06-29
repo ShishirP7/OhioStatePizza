@@ -168,7 +168,7 @@ export default function CartSummary() {
         });
     }
   }, [total]);
-  
+
   // Check for saved email and empty cart
   useEffect(() => {
     const storedEmail = localStorage.getItem("customerEmail");
@@ -602,7 +602,7 @@ export default function CartSummary() {
               </div>
 
               {clientSecret && (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <Elements stripe="pk_live_51RRCN1EFqbuAFwANjdCxKWbSvVD5DsIHu7ZT2QxngSNGi8SZIcWubaDAJTGoUmbXHFGdj6Nn6Ck9e117FoDKUufS00X5i5pl74" options={{ clientSecret }}>
                   <CheckoutForm
                     billingInfo={billingInfo}
                     carryoutInfo={carryoutInfo}
