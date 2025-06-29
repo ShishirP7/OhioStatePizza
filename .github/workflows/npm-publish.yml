@@ -38,6 +38,9 @@ jobs:
             npm install
             
             echo "⚒️ Building the app..."
+            # Create or update .env.local with Stripe key
+            echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" > .env.local
+            
             npm run build
             
             echo "🚀 Starting PM2..."
