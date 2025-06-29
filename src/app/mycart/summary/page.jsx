@@ -154,9 +154,12 @@ export default function CartSummary() {
   useEffect(() => {
     if (total > 0) {
       axios
-        .post("https://api.ohiostatepizzas.com/api/payment/create-payment-intent", {
-          amount: Math.round(parseFloat(total) * 100), // Convert to cents
-        })
+        .post(
+          "https://api.ohiostatepizzas.com/api/payment/create-payment-intent",
+          {
+            amount: Math.round(parseFloat(total) * 100), // Convert to cents
+          }
+        )
         .then((response) => {
           setClientSecret(response.data.clientSecret);
         })
@@ -602,7 +605,12 @@ export default function CartSummary() {
               </div>
 
               {clientSecret && (
-                <Elements stripe="pk_live_51RRCN1EFqbuAFwANjdCxKWbSvVD5DsIHu7ZT2QxngSNGi8SZIcWubaDAJTGoUmbXHFGdj6Nn6Ck9e117FoDKUufS00X5i5pl74" options={{ clientSecret }}>
+                <Elements
+                  stripe={loadStripe(
+                    "pk_live_51RRCN1EFqbuAFwANjdCxKWbSvVD5DsIHu7ZT2QxngSNGi8SZIcWubaDAJTGoUmbXHFGdj6Nn6Ck9e117FoDKUufS00X5i5pl74"
+                  )}
+                  options={{ clientSecret }}
+                >
                   <CheckoutForm
                     billingInfo={billingInfo}
                     carryoutInfo={carryoutInfo}
