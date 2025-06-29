@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.0.3
@@ -15,27 +16,41 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            set -e  # Exit on error
+
             CLIENT_DIR="/var/www/ohio-state-client"
             CLIENT_REPO="https://github.com/ShishirP7/OhioStatePizza.git"
+            CLIENT_PORT=3005
+            CLIENT_PROCESS_NAME="next-client"
 
+            echo "Deploying frontend..."
+
+            # Clone if missing
             if [ ! -d "$CLIENT_DIR" ]; then
-              echo "Directory doesn't exist, cloning client repository..."
+              echo "Cloning frontend repo..."
               sudo mkdir -p /var/www
-              git clone $CLIENT_REPO $CLIENT_DIR
-              cd $CLIENT_DIR
-              echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_SECRET_KEY }}" > .env.local
-              npm install
-              npm run build
-              pm2 start "npm run start" --name next-client
-            else
-              echo "Directory exists, updating client repository..."
-              cd $CLIENT_DIR
-              git pull origin main
-              echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_SECRET_KEY }}" > .env.local
-              npm install
-              npm run build
-            PORT=3005 pm2 start "npm run start" --name next-client
+              git clone "$CLIENT_REPO" "$CLIENT_DIR"
             fi
 
+            cd "$CLIENT_DIR"
+
+            echo "Fetching latest code..."
+            git reset --hard
+            git pull origin main
+
+            echo "Setting environment variables..."
+            echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_SECRET_KEY }}" > .env.local
+
+            echo "Installing dependencies and building..."
+            npm install
+            npm run build
+
+            echo "Starting or restarting frontend app with PM2..."
+            pm2 describe "$CLIENT_PROCESS_NAME" > /dev/null \
+              && pm2 restart "$CLIENT_PROCESS_NAME" \
+              || PORT=$CLIENT_PORT pm2 start "npm run start" --name "$CLIENT_PROCESS_NAME"
+
+            echo "Reloading Nginx..."
             sudo nginx -t && sudo systemctl restart nginx
-            echo "Client deployed successfully"
+
+            echo "✅ Frontend deployed successfully."
