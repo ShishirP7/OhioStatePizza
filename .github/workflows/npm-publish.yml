@@ -41,7 +41,6 @@ jobs:
             # Create .env.local with proper permissions
             echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" > .env.local
             chmod 644 .env.local
-
             echo "⚒️ Building the app..."
             npm run build
             echo "🚀 Starting PM2..."
