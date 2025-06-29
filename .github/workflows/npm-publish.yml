@@ -37,19 +37,14 @@ jobs:
             echo "📦 Installing dependencies..."
             npm install
             
-            echo "🔧 Setting up environment..."
-            # Create .env.local with proper permissions
-            echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" > .env.local
-            chmod 644 .env.local
-            
             echo "⚒️ Building the app..."
+            # Create or update .env.local with Stripe key
+            echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" > .env.local
+            
             npm run build
             
             echo "🚀 Starting PM2..."
             pm2 delete next-client 2>/dev/null || true
-            # Start with explicit env vars
-            PORT=3005 pm2 start "npm run start" --name next-client --env production \
-              --update-env \
-              -- "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}"
+            PORT=3005 pm2 start "npm run start" --name next-client
             
             echo "✅ Frontend deployed successfully!"
