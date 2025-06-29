@@ -23,6 +23,7 @@ jobs:
               sudo mkdir -p /var/www
               git clone $CLIENT_REPO $CLIENT_DIR
               cd $CLIENT_DIR
+              echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_SECRET_KEY }}" > .env.local
               npm install
               npm run build
               pm2 start "npm run start" --name next-client
@@ -30,6 +31,7 @@ jobs:
               echo "Directory exists, updating client repository..."
               cd $CLIENT_DIR
               git pull origin main
+              echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_SECRET_KEY }}" > .env.local
               npm install
               npm run build
             PORT=3005 pm2 start "npm run start" --name next-client
