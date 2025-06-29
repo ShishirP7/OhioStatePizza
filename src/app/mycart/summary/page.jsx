@@ -168,6 +168,7 @@ export default function CartSummary() {
         });
     }
   }, [total]);
+  
   // Check for saved email and empty cart
   useEffect(() => {
     const storedEmail = localStorage.getItem("customerEmail");
