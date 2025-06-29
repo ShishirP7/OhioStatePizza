@@ -104,7 +104,7 @@ export default function CartSummary() {
 
     try {
       const res = await axios.post(
-        "http://66.94.97.165:4001/api/orders",
+        "https://api.ohiostatepizzas.com/api/orders",
         orderPayload
       );
 
