@@ -17,7 +17,7 @@ export default function CustomizeNewItemForm({ item, onClose }) {
   );
 
   const [activeTab, setActiveTab] = useState(optionKeys[0] || "");
-
+  console.log(item)
   const toggleOption = (optionType, label) => {
     const isMultiple = item.options[optionType]?.isMultiple;
     setSelectedOptions((prev) => {
