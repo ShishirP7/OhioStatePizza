@@ -1,41 +1,32 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
 import SelectionModal from "./modals/selectionModal";
 import CustomizeNewItemForm from "./modals/CustomizeNewItemForm";
+import { useMenu } from "../context/menuContext";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.ohiostatepizzas.com";
-
-const MenuSection = () => {
-  const [menuItems, setMenuItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+export default function MenuSection() {
+  const { menuItems, loading } = useMenu();
   const [modalOpen, setModalOpen] = useState(false);
   const [customizeItem, setCustomizeItem] = useState(null);
-
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // When menuItems change, default to first category
   useEffect(() => {
-    const fetchMenuItems = async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/menuitems`);
-        const data = await res.json();
-        setMenuItems(data);
-        if (data.length > 0) {
-          setSelectedCategory(data[0].category);
-        }
-      } catch (error) {
-        console.log("Error fetching menu items:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMenuItems();
-  }, []);
+    if (menuItems && menuItems.length > 0) {
+      setSelectedCategory(menuItems[0].category);
+    } else {
+      setSelectedCategory(null);
+    }
+  }, [menuItems]);
 
-  const categories = Array.from(new Set(menuItems.map((item) => item.category))).map((category) => {
+  // Build categories list with icons
+  const categories = Array.from(
+    new Set(menuItems.map((item) => item.category))
+  ).map((category) => {
     let icon;
     switch (category) {
       case "Burgers": icon = "🍔"; break;
@@ -49,7 +40,9 @@ const MenuSection = () => {
     return { category, icon };
   });
 
-  const selectedItems = menuItems.filter((item) => item.category === selectedCategory);
+  const selectedItems = menuItems.filter(
+    (item) => item.category === selectedCategory
+  );
 
   const openModal = (item) => {
     setCustomizeItem(item);
@@ -68,25 +61,29 @@ const MenuSection = () => {
 
         {loading ? (
           <p className="text-gray-500">Loading menu items...</p>
+        ) : menuItems.length === 0 ? (
+          <p className="text-gray-500">No menu items available for your location</p>
         ) : (
           <>
+            {/* Category Tabs */}
             <ScrollReveal>
               <div className="flex justify-center flex-wrap gap-4 mb-10">
-                {categories.map((cat, index) => (
-                  <div
-                    key={index}
+                {categories.map((cat) => (
+                  <button
+                    key={cat.category}
                     onClick={() => setSelectedCategory(cat.category)}
-                    className={`flex flex-col items-center cursor-pointer transition-transform transform hover:scale-110 ${
+                    className={`flex flex-col items-center cursor-pointer transition-transform hover:scale-110 ${
                       selectedCategory === cat.category ? "text-red-600" : "text-gray-700"
                     }`}
                   >
                     <span className="text-3xl">{cat.icon}</span>
                     <span className="text-sm font-semibold mt-1 uppercase">{cat.category}</span>
-                  </div>
+                  </button>
                 ))}
               </div>
             </ScrollReveal>
 
+            {/* Item List */}
             <ScrollReveal>
               <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8 text-left">
                 <AnimatePresence mode="wait">
@@ -102,7 +99,7 @@ const MenuSection = () => {
                       <div className="flex justify-between items-center">
                         <p className="text-lg font-semibold text-gray-900">{item.name}</p>
                         <div className="flex items-center gap-3">
-                          <p className="text-red-600 font-bold text-lg">${item.price}</p>
+                          <p className="text-red-600 font-bold text-lg">${item.price?.toFixed(2)}</p>
                           <button
                             aria-label="Customize"
                             onClick={() => openModal(item)}
@@ -112,7 +109,9 @@ const MenuSection = () => {
                           </button>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-500">{item.description}</p>
+                      {item.description && (
+                        <p className="text-sm text-gray-500">{item.description}</p>
+                      )}
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -136,6 +135,4 @@ const MenuSection = () => {
       </div>
     </section>
   );
-};
-
-export default MenuSection;
+}

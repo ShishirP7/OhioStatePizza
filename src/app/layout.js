@@ -3,6 +3,7 @@ import "./globals.css";
 import Head from "next/head";
 import { CartProvider } from "./context/cartContext";
 import SettingsButton from "./components/SettingsButton";
+import { MenuProvider } from "./context/menuContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +34,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CartProvider>
-          <div className="fixed top-4 right-4 z-50">
-            <SettingsButton />
-          </div>
-          {children}
-        </CartProvider>
+        <MenuProvider>
+          <CartProvider>
+            <div className="fixed top-4 right-4 z-50">
+              <SettingsButton />
+            </div>
+            {children}
+          </CartProvider>
+        </MenuProvider>
       </body>
     </html>
   );

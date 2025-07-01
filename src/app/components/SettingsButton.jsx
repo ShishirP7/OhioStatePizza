@@ -5,12 +5,14 @@ import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiSettings, FiShoppingBag } from "react-icons/fi"; // Added shopping bag icon
 import { PiCookingPotFill } from "react-icons/pi";
+import { useRouter } from "next/navigation";
 
 export default function SettingsButton() {
   const [open, setOpen] = useState(false);
   const [zipCode, setZipCode] = useState("");
   const [email, setEmail] = useState("");
   const [hasEmail, setHasEmail] = useState(false);
+  const router = useRouter();
 
   // Load stored values on mount
   useEffect(() => {
@@ -19,14 +21,18 @@ export default function SettingsButton() {
     setZipCode(savedZip);
     setEmail(savedEmail);
     setHasEmail(!!savedEmail);
+    router.refresh(); // Refresh to ensure latest data is loaded
+
   }, []);
 
-  const handleSave = () => {
-    localStorage.setItem("userLocationZip", zipCode);
-    localStorage.setItem("customerEmail", email);
-    setHasEmail(!!email);
-    setOpen(false);
-  };
+ const handleSave = () => {
+  if (!zipCode) return;
+  localStorage.setItem("userLocationZip", zipCode);
+  localStorage.setItem("customerEmail", email);
+  setHasEmail(!!email);
+  setOpen(false);
+  window.location.href = "/"; // 👈 redirect to home to trigger refetch
+};
 
   return (
     <>
