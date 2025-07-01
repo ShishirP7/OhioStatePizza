@@ -12,49 +12,44 @@ import Testimonial from "./components/Testimonial";
 import BurgerGallery from "./components/Gallery";
 import CartDrawer from "./components/CartDraw";
 import Footer from "./components/Footer";
+import { useMenu } from "./context/menuContext";
 
 export default function Home() {
   const menuRef = useRef(null);
-  const [userLocation, setUserLocation] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [showSettings, setShowSettings] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { zip, fetchMenuItemsByZip } = useMenu();
 
   // Load on mount
   useEffect(() => {
     const savedZip = localStorage.getItem("userLocationZip") || "";
     const savedEmail = localStorage.getItem("customerEmail") || "";
 
-    if (savedZip) {
-      setUserLocation(savedZip);
-    }
-
-    if (savedEmail) {
-      setCustomerEmail(savedEmail);
-    }
-
-    // If no zip, force modal
     if (!savedZip) {
       setShowSettings(true);
     }
 
+    setCustomerEmail(savedEmail);
     setIsLoading(false);
   }, []);
 
-  // Save handler
-  const handleSaveSettings = (zip, email) => {
-    if (zip) {
-      localStorage.setItem("userLocationZip", zip);
-      setUserLocation(zip);
+  // Handle saving settings
+  const handleSaveSettings = (newZip, email) => {
+    if (newZip) {
+      localStorage.setItem("userLocationZip", newZip);
+      fetchMenuItemsByZip(newZip);  // ✅ Immediately refetch menu
     }
+
     if (email) {
       localStorage.setItem("customerEmail", email);
       setCustomerEmail(email);
     }
+
     setShowSettings(false);
   };
 
-  // Loading spinner while checking
   if (isLoading) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-white">
@@ -70,7 +65,7 @@ export default function Home() {
         open={showSettings}
         onClose={() => {}}
         onSave={handleSaveSettings}
-        initialZip={userLocation}
+        initialZip={zip}
         initialEmail={customerEmail}
       />
 
@@ -81,11 +76,13 @@ export default function Home() {
           }
         }} />
       </ScrollFade>
+
       <Specials />
-      
+
       <div ref={menuRef}>
         <MenuSection />
       </div>
+
       <DeliveryReward />
       <Testimonial />
       <BurgerGallery />
@@ -104,11 +101,14 @@ function SettingsModal({ open, onClose, onSave, initialZip, initialEmail }) {
     setEmail(initialEmail || "");
   }, [initialZip, initialEmail]);
 
-  const handleSave = () => {
-    if (!zipCode) return;
-    onSave(zipCode, email);
-  };
-
+const handleSave = () => {
+  if (!zipCode) return;
+  localStorage.setItem("userLocationZip", zipCode);
+  if (email) {
+    localStorage.setItem("customerEmail", email);
+  }
+  window.location.href = window.location.href;
+};
   return (
     <Transition show={open} as={Fragment}>
       <Dialog onClose={() => {}} className="relative z-50">
