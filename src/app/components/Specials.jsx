@@ -36,7 +36,7 @@ const Specials = () => {
             {specials.map((combo) => (
               <div
                 key={combo._id}
-                className="group relative bg-white shadow-2xl rounded-xl p-6 flex flex-col justify-between items-center transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-2"
+                className="group relative bg-white shadow-2xl rounded-xl p-6 md:py-20 flex flex-col justify-between items-center transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-2"
               >
                 <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-90 z-0" />
                 <div className="relative z-10 text-center mb-4">
@@ -57,7 +57,7 @@ const Specials = () => {
                   <ShoppingCart className="w-4 h-4" />
                   ORDER NOW
                 </button>
-                <img
+                {/* <img
                   src={
                     combo.imageBase64
                       ? `data:image/png;base64,${combo.imageBase64}`
@@ -65,7 +65,7 @@ const Specials = () => {
                   }
                   alt={combo.name}
                   className="relative z-10 mt-6 h-36 object-contain"
-                />
+                /> */}
               </div>
             ))}
           </div>
