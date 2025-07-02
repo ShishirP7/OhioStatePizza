@@ -626,6 +626,7 @@ export default function CartSummary() {
             </div>
             <button
               onClick={handlePlaceOrder}
+              disabled
               className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors duration-200"
             >
               Continue to Payment
