@@ -147,8 +147,6 @@ export default function CartSummary() {
   const [selectedStoreId, setSelectedStoreId] = useState(null);
   const [serviceType, setServiceType] = useState("Carryout");
   const [userZipCode, setUserZipCode] = useState("");
-  const [userDeliveryAddress, setUserDeliveryAddress] = useState("");
-  const [storeAddress, setStoreAddress] = useState(""); // for carryout
   // Calculate total price
   const cartSubtotal = cartItems.reduce(
     (acc, item) => acc + parseFloat(item.totalPrice),
@@ -168,9 +166,25 @@ export default function CartSummary() {
 
   useEffect(() => {
     const savedStoreId = localStorage.getItem("userStoreId");
+    const savedAddressJson = localStorage.getItem("userAddress");
     const savedServiceType = localStorage.getItem("userLocation") || "Carryout";
     const savedZip = localStorage.getItem("userZipCode") || "";
 
+    const savedDeliveryAddress = localStorage.getItem("userDeliveryAddress");
+    console.log("Saved Delivery Address:", savedDeliveryAddress);
+    if (savedDeliveryAddress) {
+      try {
+        const parsedDelivery = JSON.parse(savedDeliveryAddress);
+        if (parsedDelivery?.street && parsedDelivery?.zip) {
+          setCarryoutInfo((prev) => ({
+            ...prev,
+            address: `${parsedDelivery.street}, ${parsedDelivery.city}, ${parsedDelivery.zip}`,
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to parse delivery address:", err);
+      }
+    }
     setServiceType(savedServiceType);
     setUserZipCode(savedZip);
 
@@ -178,16 +192,17 @@ export default function CartSummary() {
       setSelectedStoreId(savedStoreId);
     }
 
-    const savedDeliveryAddress = localStorage.getItem("userDeliveryAddress");
-    if (savedDeliveryAddress) {
+    if (savedAddressJson) {
       try {
-        const parsed = JSON.parse(savedDeliveryAddress);
-        if (parsed?.street && parsed?.zip) {
-          const fullAddress = `${parsed.street}, ${parsed.city}, ${parsed.zip}`;
-          setUserDeliveryAddress(fullAddress);
+        const parsed = JSON.parse(savedAddressJson);
+        if (parsed?.store?.address?.formatted) {
+          setCarryoutInfo((prev) => ({
+            ...prev,
+            address: parsed.store.address.formatted,
+          }));
         }
       } catch (err) {
-        console.error("Failed to parse delivery address:", err);
+        console.error("Failed to parse saved address:", err);
       }
     }
   }, []);
@@ -197,12 +212,9 @@ export default function CartSummary() {
   useEffect(() => {
     if (total > 0) {
       axios
-        .post(
-          "https://api.ohiostatepizzas.com/api/payment/create-payment-intent",
-          {
-            amount: Math.round(parseFloat(total)), // Convert to cents
-          }
-        )
+        .post("https://api.ohiostatepizzas/api/payment/create-payment-intent", {
+          amount: Math.round(parseFloat(total)), // Convert to cents
+        })
         .then((response) => {
           setClientSecret(response.data.clientSecret);
         })
@@ -227,15 +239,6 @@ export default function CartSummary() {
       router.push("/");
     }
   }, [cartItems, router, savedEmail]);
-
-  useEffect(() => {
-    if (serviceType === "Carryout" && selectedStoreId && stores.length > 0) {
-      const store = stores.find((s) => s._id === selectedStoreId);
-      if (store?.address?.formatted) {
-        setStoreAddress(store.address.formatted);
-      }
-    }
-  }, [serviceType, selectedStoreId, stores]);
 
   const handleBillingChange = (e) => {
     const { name, value } = e.target;
@@ -282,7 +285,7 @@ export default function CartSummary() {
     }
 
     if (serviceType === "Delivery") {
-      if (!userDeliveryAddress || userDeliveryAddress.trim() === "") {
+      if (!carryoutInfo.address || carryoutInfo.address.trim() === "") {
         setModalMessage("Please enter your delivery address");
         return false;
       }
@@ -303,35 +306,12 @@ export default function CartSummary() {
     return true;
   };
 
-  const buildFinalPayload = () => ({
-    serviceType,
-    billingInfo,
-    carryoutInfo: {
-      ...carryoutInfo,
-      address: serviceType === "Delivery" ? userDeliveryAddress : storeAddress,
-    },
-    cartItems,
-    paymentInfo: {
-      method: "Credit Card",
-      status: "pending",
-    },
-    orderTotal: parseFloat(total),
-  });
-
-  console.log("Final Payload:", buildFinalPayload());
-
   const handlePlaceOrder = () => {
-    setCarryoutInfo((prev) => ({
-      ...prev,
-      address: serviceType === "Delivery" ? userDeliveryAddress : storeAddress,
-    }));
-
     if (!validateForm()) {
       setModalStatus("error");
       setModalOpen(true);
       return;
     }
-
     setConfirmModalOpen(true);
   };
 
@@ -341,12 +321,7 @@ export default function CartSummary() {
       const orderPayload = {
         serviceType,
         billingInfo,
-        carryoutInfo: {
-          ...carryoutInfo,
-          address:
-            serviceType === "Delivery" ? userDeliveryAddress : storeAddress,
-        },
-
+        carryoutInfo,
         cartItems,
         paymentInfo: {
           method: "Credit Card",
@@ -474,12 +449,29 @@ export default function CartSummary() {
                 <label className="block text-gray-700 font-semibold mb-1">
                   Carryout Store
                 </label>
-                <input
-                  type="text"
-                  value={storeAddress}
-                  disabled
-                  className="w-full border rounded-md px-3 py-2 bg-gray-100 cursor-not-allowed"
-                />
+                {selectedStore ? (
+                  <input
+                    type="text"
+                    value={`${selectedStore.name} - ${selectedStore.address.formatted}`}
+                    disabled
+                    className="w-full border rounded-md px-3 py-2 bg-gray-100 cursor-not-allowed"
+                  />
+                ) : (
+                  <select
+                    name="address"
+                    value={carryoutInfo.address}
+                    onChange={handleCarryoutChange}
+                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    required
+                  >
+                    <option value="">-- Select a Store --</option>
+                    {stores.map((store) => (
+                      <option key={store._id} value={store.address.formatted}>
+                        {store.name} - {store.address.formatted}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
             ) : (
               <div>
@@ -488,9 +480,9 @@ export default function CartSummary() {
                 </label>
                 <input
                   type="text"
-                  name="deliveryAddress"
-                  value={userDeliveryAddress}
-                  onChange={(e) => setUserDeliveryAddress(e.target.value)}
+                  name="address"
+                  value={carryoutInfo.address}
+                  onChange={handleCarryoutChange}
                   placeholder="Enter Delivery Address"
                   className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
                   required
@@ -743,14 +735,9 @@ export default function CartSummary() {
                     ? carryoutInfo.scheduledTime
                     : "ASAP"}
                 </p>
-                <div>
-                  <p>
-                    <strong>Address:</strong>{" "}
-                    {serviceType === "Delivery"
-                      ? userDeliveryAddress
-                      : storeAddress}
-                  </p>
-                </div>
+                <p>
+                  <strong>Address:</strong> {carryoutInfo.address}
+                </p>
                 <p>
                   <strong>Subtotal:</strong> ${cartSubtotal.toFixed(2)}
                 </p>
@@ -766,7 +753,9 @@ export default function CartSummary() {
 
               {clientSecret && (
                 <Elements
-                  stripe={loadStripe(stripePromise)}
+                  stripe={loadStripe(
+                    "pk_live_51RRCN1EFqbuAFwANjdCxKWbSvVD5DsIHu7ZT2QxngSNGi8SZIcWubaDAJTGoUmbXHFGdj6Nn6Ck9e117FoDKUufS00X5i5pl74"
+                  )}
                   options={{ clientSecret }}
                 >
                   <CheckoutForm
