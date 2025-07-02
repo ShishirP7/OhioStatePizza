@@ -164,7 +164,7 @@ export default function CartSummary() {
           setClientSecret(response.data.clientSecret);
         })
         .catch((error) => {
-          console.error("Error creating payment intent:", error);
+          console.log("Error creating payment intent:", error);
           setModalStatus("error");
           setModalMessage("Failed to initialize payment system");
           setModalOpen(true);
@@ -284,7 +284,7 @@ export default function CartSummary() {
         throw new Error("Unexpected response from server");
       }
     } catch (err) {
-      console.error("Order submission error:", err);
+      console.log("Order submission error:", err);
       setModalStatus("error");
       setModalMessage("Failed to place order. Please try again.");
       setModalOpen(true);

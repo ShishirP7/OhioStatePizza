@@ -33,7 +33,7 @@ export const MenuProvider = ({ children }) => {
 
       setMenuItems(Array.isArray(data?.menuItems) ? data.menuItems : []);
     } catch (error) {
-      console.error("Error fetching menu items:", error);
+      console.log("Error fetching menu items:", error);
       setMenuItems([]);
     } finally {
       setLoading(false);
@@ -42,7 +42,7 @@ export const MenuProvider = ({ children }) => {
 
   // On mount, load ZIP from localStorage
   useEffect(() => {
-    const storedZip = localStorage.getItem("userLocationZip");
+    const storedZip = localStorage.getItem("userZipCode");
     if (storedZip) {
       setZip(storedZip);
     } else {
