@@ -743,14 +743,14 @@ export default function CartSummary() {
                     ? carryoutInfo.scheduledTime
                     : "ASAP"}
                 </p>
-                <p>
+                <div>
                   <p>
                     <strong>Address:</strong>{" "}
                     {serviceType === "Delivery"
                       ? userDeliveryAddress
                       : storeAddress}
                   </p>
-                </p>
+                </div>
                 <p>
                   <strong>Subtotal:</strong> ${cartSubtotal.toFixed(2)}
                 </p>
