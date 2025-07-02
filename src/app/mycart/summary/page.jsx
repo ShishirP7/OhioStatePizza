@@ -269,41 +269,41 @@ export default function CartSummary() {
   };
 
   const validateForm = () => {
-    const { firstName, lastName, phone, email, address } = billingInfo;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const { firstName, lastName, phone, email } = billingInfo;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!firstName || !lastName || !phone || !email) {
-      setModalMessage("Please fill in all required fields");
+  if (!firstName || !lastName || !phone || !email) {
+    setModalMessage("Please fill in all required fields");
+    return false;
+  }
+
+  if (!emailRegex.test(email)) {
+    setModalMessage("Please enter a valid email address");
+    return false;
+  }
+
+  if (serviceType === "Delivery") {
+    if (!carryoutInfo.address || carryoutInfo.address.trim() === "") {
+      setModalMessage("Please enter your delivery address");
       return false;
     }
-
-    if (!emailRegex.test(email)) {
-      setModalMessage("Please enter a valid email address");
+    if (!userZipCode || userZipCode.length !== 5) {
+      setModalMessage("Invalid delivery ZIP code");
       return false;
     }
+  }
 
-    if (serviceType === "Delivery") {
-      if (!address) {
-        setModalMessage("Please enter your delivery address");
-        return false;
-      }
-      // Validate zip (example rule)
-      if (!userZipCode || userZipCode.length !== 5) {
-        setModalMessage("Invalid delivery ZIP code");
-        return false;
-      }
-    }
+  if (
+    carryoutInfo.timeOption === "scheduled" &&
+    !carryoutInfo.scheduledTime
+  ) {
+    setModalMessage("Please select a scheduled time");
+    return false;
+  }
 
-    if (
-      carryoutInfo.timeOption === "scheduled" &&
-      !carryoutInfo.scheduledTime
-    ) {
-      setModalMessage("Please select a scheduled time");
-      return false;
-    }
+  return true;
+};
 
-    return true;
-  };
 
   const handlePlaceOrder = () => {
     if (!validateForm()) {
