@@ -157,7 +157,7 @@ export default function CartSummary() {
         .post(
           "https://api.ohiostatepizzas.com/api/payment/create-payment-intent",
           {
-            amount: Math.round(parseFloat(total) * 100), // Convert to cents
+            amount: Math.round(parseFloat(total)), // Convert to cents
           }
         )
         .then((response) => {
