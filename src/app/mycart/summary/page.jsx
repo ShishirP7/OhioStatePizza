@@ -148,9 +148,14 @@ export default function CartSummary() {
   const [serviceType, setServiceType] = useState("Carryout");
   const [userZipCode, setUserZipCode] = useState("");
   // Calculate total price
-  const total = cartItems
-    .reduce((acc, item) => acc + parseFloat(item.totalPrice), 0)
-    .toFixed(2);
+  const cartSubtotal = cartItems.reduce(
+    (acc, item) => acc + parseFloat(item.totalPrice),
+    0
+  );
+
+  const deliveryFee = serviceType === "Delivery" ? 3 : 0;
+
+  const total = (cartSubtotal + deliveryFee).toFixed(2);
 
   useEffect(() => {
     axios
@@ -269,41 +274,40 @@ export default function CartSummary() {
   };
 
   const validateForm = () => {
-  const { firstName, lastName, phone, email } = billingInfo;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const { firstName, lastName, phone, email } = billingInfo;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!firstName || !lastName || !phone || !email) {
-    setModalMessage("Please fill in all required fields");
-    return false;
-  }
-
-  if (!emailRegex.test(email)) {
-    setModalMessage("Please enter a valid email address");
-    return false;
-  }
-
-  if (serviceType === "Delivery") {
-    if (!carryoutInfo.address || carryoutInfo.address.trim() === "") {
-      setModalMessage("Please enter your delivery address");
+    if (!firstName || !lastName || !phone || !email) {
+      setModalMessage("Please fill in all required fields");
       return false;
     }
-    if (!userZipCode || userZipCode.length !== 5) {
-      setModalMessage("Invalid delivery ZIP code");
+
+    if (!emailRegex.test(email)) {
+      setModalMessage("Please enter a valid email address");
       return false;
     }
-  }
 
-  if (
-    carryoutInfo.timeOption === "scheduled" &&
-    !carryoutInfo.scheduledTime
-  ) {
-    setModalMessage("Please select a scheduled time");
-    return false;
-  }
+    if (serviceType === "Delivery") {
+      if (!carryoutInfo.address || carryoutInfo.address.trim() === "") {
+        setModalMessage("Please enter your delivery address");
+        return false;
+      }
+      if (!userZipCode || userZipCode.length !== 5) {
+        setModalMessage("Invalid delivery ZIP code");
+        return false;
+      }
+    }
 
-  return true;
-};
+    if (
+      carryoutInfo.timeOption === "scheduled" &&
+      !carryoutInfo.scheduledTime
+    ) {
+      setModalMessage("Please select a scheduled time");
+      return false;
+    }
 
+    return true;
+  };
 
   const handlePlaceOrder = () => {
     if (!validateForm()) {
@@ -604,13 +608,22 @@ export default function CartSummary() {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-4">
-              <div className="flex justify-between font-bold text-lg text-gray-900">
+            <div className="border-t border-gray-200 pt-4 space-y-2">
+              <div className="flex justify-between text-gray-800">
+                <span>Subtotal</span>
+                <span>${cartSubtotal.toFixed(2)}</span>
+              </div>
+              {serviceType === "Delivery" && (
+                <div className="flex justify-between text-gray-800">
+                  <span>Delivery Fee</span>
+                  <span>$3.00</span>
+                </div>
+              )}
+              <div className="flex justify-between font-bold text-lg text-gray-900 border-t border-gray-200 pt-2">
                 <span>Order Total</span>
                 <span>${total}</span>
               </div>
             </div>
-
             <button
               onClick={handlePlaceOrder}
               className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors duration-200"
@@ -728,6 +741,14 @@ export default function CartSummary() {
                 <p>
                   <strong>Address:</strong> {carryoutInfo.address}
                 </p>
+                <p>
+                  <strong>Subtotal:</strong> ${cartSubtotal.toFixed(2)}
+                </p>
+                {serviceType === "Delivery" && (
+                  <p>
+                    <strong>Delivery Fee:</strong> $3.00
+                  </p>
+                )}
                 <p className="font-bold pt-2">
                   <strong>Total:</strong> ${total}
                 </p>
