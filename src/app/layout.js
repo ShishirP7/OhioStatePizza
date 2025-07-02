@@ -36,9 +36,7 @@ export default function RootLayout({ children }) {
       >
         <MenuProvider>
           <CartProvider>
-            <div className="fixed top-4 right-4 z-50">
-              <SettingsButton />
-            </div>
+            
             {children}
           </CartProvider>
         </MenuProvider>

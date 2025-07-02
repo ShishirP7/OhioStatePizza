@@ -130,11 +130,10 @@ export default function CartSummary() {
     phone: "",
     email: "",
   });
-
   const [carryoutInfo, setCarryoutInfo] = useState({
     timeOption: "asap",
     scheduledTime: "",
-    address: "44 S Central Ave, Fairborn, OH 45324",
+    address: "",
   });
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -144,13 +143,72 @@ export default function CartSummary() {
   const [savedEmail, setSavedEmail] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentProcessing, setPaymentProcessing] = useState(false);
-
+  const [stores, setStores] = useState([]);
+  const [selectedStoreId, setSelectedStoreId] = useState(null);
+  const [serviceType, setServiceType] = useState("Carryout");
+  const [userZipCode, setUserZipCode] = useState("");
   // Calculate total price
-  const total = cartItems
-    .reduce((acc, item) => acc + parseFloat(item.totalPrice), 0)
-    .toFixed(2);
+  const cartSubtotal = cartItems.reduce(
+    (acc, item) => acc + parseFloat(item.totalPrice),
+    0
+  );
+
+  const deliveryFee = serviceType === "Delivery" ? 3 : 0;
+
+  const total = (cartSubtotal + deliveryFee).toFixed(2);
+
+  useEffect(() => {
+    axios
+      .get("https://api.ohiostatepizzas.com/api/stores")
+      .then((res) => setStores(res.data || []))
+      .catch((err) => console.error("Error loading stores:", err));
+  }, []);
+
+  useEffect(() => {
+    const savedStoreId = localStorage.getItem("userStoreId");
+    const savedAddressJson = localStorage.getItem("userAddress");
+    const savedServiceType = localStorage.getItem("userLocation") || "Carryout";
+    const savedZip = localStorage.getItem("userZipCode") || "";
+
+    const savedDeliveryAddress = localStorage.getItem("userDeliveryAddress");
+    console.log("Saved Delivery Address:", savedDeliveryAddress);
+    if (savedDeliveryAddress) {
+      try {
+        const parsedDelivery = JSON.parse(savedDeliveryAddress);
+        if (parsedDelivery?.street && parsedDelivery?.zip) {
+          setCarryoutInfo((prev) => ({
+            ...prev,
+            address: `${parsedDelivery.street}, ${parsedDelivery.city}, ${parsedDelivery.zip}`,
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to parse delivery address:", err);
+      }
+    }
+    setServiceType(savedServiceType);
+    setUserZipCode(savedZip);
+
+    if (savedStoreId) {
+      setSelectedStoreId(savedStoreId);
+    }
+
+    if (savedAddressJson) {
+      try {
+        const parsed = JSON.parse(savedAddressJson);
+        if (parsed?.store?.address?.formatted) {
+          setCarryoutInfo((prev) => ({
+            ...prev,
+            address: parsed.store.address.formatted,
+          }));
+        }
+      } catch (err) {
+        console.error("Failed to parse saved address:", err);
+      }
+    }
+  }, []);
 
   // Create payment intent when component mounts or total changes
+
   useEffect(() => {
     if (total > 0) {
       axios
@@ -229,6 +287,17 @@ export default function CartSummary() {
       return false;
     }
 
+    if (serviceType === "Delivery") {
+      if (!carryoutInfo.address || carryoutInfo.address.trim() === "") {
+        setModalMessage("Please enter your delivery address");
+        return false;
+      }
+      if (!userZipCode || userZipCode.length !== 5) {
+        setModalMessage("Invalid delivery ZIP code");
+        return false;
+      }
+    }
+
     if (
       carryoutInfo.timeOption === "scheduled" &&
       !carryoutInfo.scheduledTime
@@ -253,6 +322,7 @@ export default function CartSummary() {
     setPaymentProcessing(true);
     try {
       const orderPayload = {
+        serviceType,
         billingInfo,
         carryoutInfo,
         cartItems,
@@ -299,12 +369,44 @@ export default function CartSummary() {
     setModalOpen(true);
   };
 
+  const selectedStore = stores.find((s) => s._id === selectedStoreId);
+
   return (
     <div className="min-h-screen bg-gray-50 text-black py-8 px-4 flex justify-center">
       <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left: Order Summary */}
         <div className="md:col-span-2 bg-white rounded-lg shadow-md p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Checkout</h1>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">
+              Service Type
+            </label>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() => setServiceType("Carryout")}
+                className={`px-4 py-2 rounded ${
+                  serviceType === "Carryout"
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                Carryout
+              </button>
+              <button
+                type="button"
+                onClick={() => setServiceType("Delivery")}
+                className={`px-4 py-2 rounded ${
+                  serviceType === "Delivery"
+                    ? "bg-red-600 text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                Delivery
+              </button>
+            </div>
+          </div>
 
           {/* Carryout Info */}
           <div className="space-y-4 mb-6">
@@ -345,20 +447,51 @@ export default function CartSummary() {
               </div>
             )}
 
-            <div>
-              <label className="block text-gray-700 font-semibold mb-1">
-                Carryout Address
-              </label>
-              <select
-                name="address"
-                value={carryoutInfo.address}
-                onChange={handleCarryoutChange}
-                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              >
-                <option>44 S Central Ave, Fairborn, OH 45324</option>
-                <option>819 N Nelson Rd, Columbus, OH 43219</option>
-              </select>
-            </div>
+            {serviceType === "Carryout" ? (
+              <div>
+                <label className="block text-gray-700 font-semibold mb-1">
+                  Carryout Store
+                </label>
+                {selectedStore ? (
+                  <input
+                    type="text"
+                    value={`${selectedStore.name} - ${selectedStore.address.formatted}`}
+                    disabled
+                    className="w-full border rounded-md px-3 py-2 bg-gray-100 cursor-not-allowed"
+                  />
+                ) : (
+                  <select
+                    name="address"
+                    value={carryoutInfo.address}
+                    onChange={handleCarryoutChange}
+                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    required
+                  >
+                    <option value="">-- Select a Store --</option>
+                    {stores.map((store) => (
+                      <option key={store._id} value={store.address.formatted}>
+                        {store.name} - {store.address.formatted}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            ) : (
+              <div>
+                <label className="block text-gray-700 font-semibold mb-1">
+                  Delivery Address
+                </label>
+                <input
+                  type="text"
+                  name="address"
+                  value={carryoutInfo.address}
+                  onChange={handleCarryoutChange}
+                  placeholder="Enter Delivery Address"
+                  className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  required
+                />
+              </div>
+            )}
           </div>
 
           {/* Cart Items */}
@@ -475,13 +608,22 @@ export default function CartSummary() {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-4">
-              <div className="flex justify-between font-bold text-lg text-gray-900">
+            <div className="border-t border-gray-200 pt-4 space-y-2">
+              <div className="flex justify-between text-gray-800">
+                <span>Subtotal</span>
+                <span>${cartSubtotal.toFixed(2)}</span>
+              </div>
+              {serviceType === "Delivery" && (
+                <div className="flex justify-between text-gray-800">
+                  <span>Delivery Fee</span>
+                  <span>$3.00</span>
+                </div>
+              )}
+              <div className="flex justify-between font-bold text-lg text-gray-900 border-t border-gray-200 pt-2">
                 <span>Order Total</span>
                 <span>${total}</span>
               </div>
             </div>
-
             <button
               onClick={handlePlaceOrder}
               className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors duration-200"
@@ -599,6 +741,14 @@ export default function CartSummary() {
                 <p>
                   <strong>Address:</strong> {carryoutInfo.address}
                 </p>
+                <p>
+                  <strong>Subtotal:</strong> ${cartSubtotal.toFixed(2)}
+                </p>
+                {serviceType === "Delivery" && (
+                  <p>
+                    <strong>Delivery Fee:</strong> $3.00
+                  </p>
+                )}
                 <p className="font-bold pt-2">
                   <strong>Total:</strong> ${total}
                 </p>
