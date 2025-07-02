@@ -160,12 +160,23 @@ const handleConfirm = () => {
     }
   }
 
-  // Store only these fields
+  // Always save these fields
   localStorage.setItem("customerEmail", email);
   localStorage.setItem("userZipCode", zipCode.trim());
   localStorage.setItem("userLocation", serviceType);
   localStorage.setItem("userStoreId", nearestStore._id);
   localStorage.setItem("userStoreName", nearestStore.name);
+
+  // Save delivery address if Delivery
+  if (serviceType === "Delivery") {
+    localStorage.setItem("userDeliveryAddress", JSON.stringify({
+      ...deliveryAddress,
+      storeId: nearestStore._id,
+      storeName: nearestStore.name
+    }));
+  } else {
+    localStorage.removeItem("userDeliveryAddress");
+  }
 
   window.location.reload();
 };
