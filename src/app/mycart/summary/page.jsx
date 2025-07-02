@@ -766,9 +766,7 @@ export default function CartSummary() {
 
               {clientSecret && (
                 <Elements
-                  stripe={loadStripe(
-                    "pk_live_51RRCN1EFqbuAFwANjdCxKWbSvVD5DsIHu7ZT2QxngSNGi8SZIcWubaDAJTGoUmbXHFGdj6Nn6Ck9e117FoDKUufS00X5i5pl74"
-                  )}
+                  stripe={loadStripe(stripePromise)}
                   options={{ clientSecret }}
                 >
                   <CheckoutForm
