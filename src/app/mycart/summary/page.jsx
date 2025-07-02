@@ -212,7 +212,7 @@ export default function CartSummary() {
   useEffect(() => {
     if (total > 0) {
       axios
-        .post("https://api.ohiostatepizzas/api/payment/create-payment-intent", {
+        .post("https://api.ohiostatepizzas.com/api/payment/create-payment-intent", {
           amount: Math.round(parseFloat(total)), // Convert to cents
         })
         .then((response) => {
