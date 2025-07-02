@@ -144,13 +144,50 @@ export default function CartSummary() {
   const [savedEmail, setSavedEmail] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [paymentProcessing, setPaymentProcessing] = useState(false);
+const [stores, setStores] = useState([]);
+const [selectedStoreId, setSelectedStoreId] = useState(null);
 
   // Calculate total price
   const total = cartItems
     .reduce((acc, item) => acc + parseFloat(item.totalPrice), 0)
     .toFixed(2);
 
+
+
+    useEffect(() => {
+  axios
+    .get("https://api.ohiostatepizzas.com/api/stores")
+    .then((res) => setStores(res.data || []))
+    .catch((err) => console.error("Error loading stores:", err));
+}, []);
+
+
+useEffect(() => {
+  const savedStoreId = localStorage.getItem("userStoreId");
+  const savedAddressJson = localStorage.getItem("userAddress");
+
+  if (savedStoreId) {
+    setSelectedStoreId(savedStoreId);
+  }
+
+  if (savedAddressJson) {
+    try {
+      const parsed = JSON.parse(savedAddressJson);
+      if (parsed?.store?.address?.formatted) {
+        setCarryoutInfo((prev) => ({
+          ...prev,
+          address: parsed.store.address.formatted,
+        }));
+      }
+    } catch (err) {
+      console.error("Failed to parse saved address:", err);
+    }
+  }
+}, []);
+
   // Create payment intent when component mounts or total changes
+
+
   useEffect(() => {
     if (total > 0) {
       axios
@@ -164,7 +201,7 @@ export default function CartSummary() {
           setClientSecret(response.data.clientSecret);
         })
         .catch((error) => {
-          console.log("Error creating payment intent:", error);
+          console.error("Error creating payment intent:", error);
           setModalStatus("error");
           setModalMessage("Failed to initialize payment system");
           setModalOpen(true);
@@ -284,7 +321,7 @@ export default function CartSummary() {
         throw new Error("Unexpected response from server");
       }
     } catch (err) {
-      console.log("Order submission error:", err);
+      console.error("Order submission error:", err);
       setModalStatus("error");
       setModalMessage("Failed to place order. Please try again.");
       setModalOpen(true);
@@ -298,6 +335,9 @@ export default function CartSummary() {
     setModalMessage(error || "Payment failed. Please try again.");
     setModalOpen(true);
   };
+
+  const selectedStore = stores.find((s) => s._id === selectedStoreId);
+
 
   return (
     <div className="min-h-screen bg-gray-50 text-black py-8 px-4 flex justify-center">
@@ -345,20 +385,35 @@ export default function CartSummary() {
               </div>
             )}
 
-            <div>
-              <label className="block text-gray-700 font-semibold mb-1">
-                Carryout Address
-              </label>
-              <select
-                name="address"
-                value={carryoutInfo.address}
-                onChange={handleCarryoutChange}
-                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              >
-                <option>44 S Central Ave, Fairborn, OH 45324</option>
-                <option>819 N Nelson Rd, Columbus, OH 43219</option>
-              </select>
-            </div>
+          <div>
+  <label className="block text-gray-700 font-semibold mb-1">
+    Carryout Address
+  </label>
+  {selectedStore ? (
+    <input
+      type="text"
+      value={`${selectedStore.name} - ${selectedStore.address.formatted}`}
+      disabled
+      className="w-full border rounded-md px-3 py-2 bg-gray-100 cursor-not-allowed"
+    />
+  ) : (
+    <select
+      name="address"
+      value={carryoutInfo.address}
+      onChange={handleCarryoutChange}
+      className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+      required
+    >
+      <option value="">-- Select a Store --</option>
+      {stores.map((store) => (
+        <option key={store._id} value={store.address.formatted}>
+          {store.name} - {store.address.formatted}
+        </option>
+      ))}
+    </select>
+  )}
+</div>
+
           </div>
 
           {/* Cart Items */}
