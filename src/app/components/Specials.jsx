@@ -24,72 +24,95 @@ const Specials = () => {
   return (
     <section className="w-full py-16 bg-white text-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
+        <h3 className="text-orange-600 font-bold text-xl mb-2 uppercase tracking-widest">
           Specials Combo
         </h3>
         <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
-          Our delicious burgers
+          Our Delicious Combos
         </h2>
 
         <ScrollReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 hover:cursor-grab">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {specials.map((combo) => (
               <div
                 key={combo._id}
-                className="group relative bg-white shadow-2xl rounded-xl p-6 md:py-20 flex flex-col justify-between items-center transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-2"
+                className="relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 group"
               >
-                <div className="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-90 z-0" />
-                <div className="relative z-10 text-center mb-4">
-                  <h4 className="text-xl font-extrabold text-black group-hover:text-white">
+                {combo.image && (
+                  <img
+                    src={combo.image.startsWith("data") ? combo.image : `data:image/jpeg;base64,${combo.image}`}
+                    alt={combo.name}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
+                  />
+                )}
+                <div className="p-5 text-left">
+                  <h4 className="text-xl font-bold text-gray-800 group-hover:text-orange-600">
                     {combo.name}
                   </h4>
-                  <p className="text-sm text-gray-500 mt-1 group-hover:text-white">
-                    {combo.description}
-                  </p>
-                  <p className="text-2xl font-bold text-red-600 mt-4 group-hover:text-white">
+                  {combo.description && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      {combo.description}
+                    </p>
+                  )}
+
+                  <div className="mt-3 text-sm text-gray-700">
+                    <p className="font-semibold">Includes:</p>
+                    <ul className="list-disc ml-5 space-y-1">
+                      {combo.items.map((ci, i) => (
+                        <li key={i}>
+                          <span className="font-semibold">
+                            {ci.item?.name || "Unknown Item"}
+                          </span>
+                          {/* {ci.toppings?.length > 0 && (
+                            <ul className="ml-5 mt-1 list-[circle] text-xs text-gray-600">
+                              {ci.toppings.map((top, j) => (
+                                <li key={j}>
+                                  {top.name}
+                                  {top.extraPrice > 0 && (
+                                    <span>
+                                      {" "}(+${top.extraPrice.toFixed(2)})
+                                    </span>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )} */}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <p className="mt-4 text-lg font-bold text-orange-600">
                     ${combo.price.toFixed(2)}
                   </p>
+
+                  <button
+                    onClick={() => setSelectedCombo(combo)}
+                    className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded-full flex items-center justify-center gap-2 font-semibold hover:bg-orange-600 transition"
+                  >
+                    <ShoppingCart className="w-5 h-5" /> ORDER NOW
+                  </button>
                 </div>
-                <button
-                  onClick={() => setSelectedCombo(combo)}
-                  className="relative z-10 bg-yellow-400 text-black group-hover:bg-yellow-400 group-hover:text-black mt-4 px-6 py-2 rounded-full flex items-center gap-2 shadow-md font-semibold transition-all"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  ORDER NOW
-                </button>
-                {/* <img
-                  src={
-                    combo.imageBase64
-                      ? `data:image/png;base64,${combo.imageBase64}`
-                      : "/burger.png"
-                  }
-                  alt={combo.name}
-                  className="relative z-10 mt-6 h-36 object-contain"
-                /> */}
               </div>
             ))}
           </div>
         </ScrollReveal>
 
-        {/* Modal for customizing combo */}
         {selectedCombo && (
           <div
             className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
-            onClick={() => setSelectedCombo(null)} // Close on outside click
+            onClick={() => setSelectedCombo(null)}
           >
             <div
               className="bg-white p-6 rounded-lg max-w-md w-full relative"
-              onClick={(e) => e.stopPropagation()} // Prevent modal click from closing
+              onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
               <button
                 onClick={() => setSelectedCombo(null)}
                 className="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl"
               >
                 &times;
               </button>
-
-              {/* Combo customization form */}
               <CustomizeComboForm
                 item={selectedCombo}
                 onClose={() => setSelectedCombo(null)}
