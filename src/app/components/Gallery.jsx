@@ -4,7 +4,7 @@ import React from "react";
 import ScrollReveal from "./ScrollReveal";
 
 const burgers = [
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
+  "/testimage.jpeg",
   "https://images.unsplash.com/photo-1550547660-d9450f859349",
   "https://images.unsplash.com/photo-1550547660-d9450f859349",
   "https://images.unsplash.com/photo-1550547660-d9450f859349",
@@ -23,7 +23,7 @@ const BurgerGallery = () => {
             Gallery
           </h4>
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
-            Burger Gallery
+            Pizza Gallery
           </h2>
 
           {/* Masonry-style grid */}
