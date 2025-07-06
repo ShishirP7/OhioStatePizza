@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Ohio State Pizzas Admin",
-  description: "Admin portal",
+  title: "Ohio State Pizzas",
+  description: "Client Portal",
   icons: {
     icon: "/icons/title_logo.png", // ← no relative paths
     shortcut: "/icons/title_logo.png",

@@ -13,6 +13,7 @@ const CartDrawer = ({ fullPage = false }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [customizeItem, setCustomizeItem] = useState(null);
   const [customizeIndex, setCustomizeIndex] = useState(null);
+  console.log(cartItems,"cart Items")
 
   const toggleCart = () => setIsOpen(!isOpen);
 
