@@ -336,10 +336,13 @@ export default function CartSummary() {
   };
 
   const handlePaymentSuccess = async () => {
+    const storeId = localStorage.getItem("userStoreId");
+
     setPaymentProcessing(true);
     try {
       const orderPayload = {
         serviceType,
+        storeId,
         billingInfo,
         carryoutInfo: {
           ...carryoutInfo,
