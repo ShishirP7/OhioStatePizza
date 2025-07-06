@@ -767,7 +767,7 @@ export default function CartSummary() {
               {clientSecret && (
                 <Elements
                   stripe={loadStripe(
-                    "pk_live_51RRCN1EFqbuAFwANjdCxKWbSvVD5DsIHu7ZT2QxngSNGi8SZIcWubaDAJTGoUmbXHFGdj6Nn6Ck9e117FoDKUufS00X5i5pl74"
+                    "pk_test_51RRCN8Ck4xxGBOea8w3WAJpEytIkIF8VdSRzksSpOaWKWVZXl4VSeaInAPax7mM6xKx7tTUeqGRjJ5iXnqbQAkQm00r6gnJvwq"
                   )}
                   options={{ clientSecret }}
                 >
