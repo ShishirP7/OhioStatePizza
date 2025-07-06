@@ -4,14 +4,13 @@ import React from "react";
 import ScrollReveal from "./ScrollReveal";
 
 const burgers = [
-  "/testimage.jpeg",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
-  "https://images.unsplash.com/photo-1550547660-d9450f859349",
+  "/ohio-state-pizza-sticker-1.webp",
+  "/ohio-state-pizza-sticker-2.webp",
+  "/ohio-state-pizza-sticker-3.webp",
+  "/ohio-state-pizza-sticker-4.webp",
+  "/ohio-state-pizza-sticker-5.webp",
+  "/ohio-state-pizza-sticker-6.webp",
+  "/ohio-state-pizza-sticker-7.webp",
 ];
 
 const BurgerGallery = () => {
@@ -20,10 +19,10 @@ const BurgerGallery = () => {
       <div className="max-w-7xl mx-auto px-4 text-center">
         <ScrollReveal>
           <h4 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
-            Gallery
+            Our hottest deals, ready till 2:30 AM every night.
           </h4>
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
-            Pizza Gallery
+            Late Cravings? We Got You.
           </h2>
 
           {/* Masonry-style grid */}

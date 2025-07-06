@@ -50,6 +50,7 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-lg mb-3">Instagram feed</h4>
             <div className="text-sm text-gray-400">Coming soon...</div>
+            <div className="text-sm text-gray-400">Coming soon...</div>
           </div>
         </div>
 

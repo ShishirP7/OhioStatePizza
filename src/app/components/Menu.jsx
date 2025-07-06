@@ -55,7 +55,7 @@ export default function MenuSection() {
         <ScrollReveal>
           <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">Menu</h3>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-gray-900">
-            Choose your combo <br />& order now!
+            Pizza. Wings. Magic.
           </h2>
         </ScrollReveal>
 

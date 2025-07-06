@@ -13,9 +13,9 @@ const slides = [
     image: "chick1.webp",
   },
   {
-    title: "TWO XL Pizzas + 1 Small FREE",
-    subtitle: "🎉 Grand Opening Special 🎉",
-    details: "All for",
+    title: "TWO X-Large Pizzas",
+    subtitle: "Pizza Special",
+    details: "(one toping",
     price: "$23.99",
     priceColor: "text-red-700",
     blendColor: "bg-[#ffc107]",

@@ -13,15 +13,15 @@ const DeliveryReward = () => {
           <div className="flex flex-col justify-between text-left">
             <div>
               <h4 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
-                Delivery
+                Delivery & Pickup
               </h4>
               <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
-                Choose what you want, select a pick up time
+                Get it your way — hot and fresh.
               </h2>
               <p className="text-gray-600 text-base mb-6">
-                As well known and we are very busy all days advice you. advice
-                you to call us of before arriving, so we can guarantee your
-                seat.
+                <i>We’re open late every night!</i><br></br>
+                <b>Mon–Thu & Sun: Open till 2:30 AM<br></br>
+                Fri & Sat: Open till 3:15 AM</b>
               </p>
             </div>
             <div>
@@ -37,15 +37,13 @@ const DeliveryReward = () => {
           <div className="flex flex-col justify-between text-left">
             <div>
               <h4 className="text-red-600 font-bold text-xl mb-2 uppercase font-[cursive]">
-                Reward
+                Made with Real Love
               </h4>
               <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
-                Earn points every time you order online
+                Quality You Can Taste in Every Bite
               </h2>
               <p className="text-gray-600 text-base mb-6">
-                As well known and we are busy all days advice you. advice you to
-                call us of before arriving, so we can guarantee your seat.
-                advice
+                Our dough is handmade, our ingredients are fresh, and every pizza is crafted with care. Whether it's a quick lunch or a late-night feast — you're always getting the good stuff.
               </p>
             </div>
             <div>

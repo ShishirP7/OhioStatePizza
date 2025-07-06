@@ -47,7 +47,7 @@ const Testimonial = () => {
             Testimonial
           </h4>
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
-            Clients review
+            Slice of Feedback
           </h2>
         </ScrollReveal>
 
