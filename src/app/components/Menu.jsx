@@ -29,12 +29,13 @@ export default function MenuSection() {
   ).map((category) => {
     let icon;
     switch (category) {
-      case "Burgers": icon = "🍔"; break;
+      case "Sandwiches": icon = "🍔"; break;
       case "Pizzas": icon = "🍕"; break;
       case "Chicken": icon = "🍗"; break;
       case "Sides": icon = "🍟"; break;
       case "Drinks": icon = "🥤"; break;
-      case "Coffee": icon = "☕"; break;
+      case "Desserts": icon = "🍰"; break;
+      case "Dinner": icon = "🍝"; break;
       default: icon = "🍽️";
     }
     return { category, icon };
