@@ -1,12 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userEmail, setUserEmail] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("customerEmail");
@@ -16,6 +19,8 @@ const Orders = () => {
       setLoading(false);
     }
   }, []);
+
+  console.log(orders)
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -38,6 +43,7 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen bg-white p-6">
+      <button className="bg-red-800 p-2 cursor-pointer rounded" onClick={()=>{router.push("/")}}>Go back</button>
       <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Order History</h1>
       <div className="max-w-3xl mx-auto space-y-6">
         {loading ? (
@@ -47,15 +53,16 @@ const Orders = () => {
         ) : orders.length === 0 ? (
           <p className="text-center text-gray-500">You haven’t placed any orders yet.</p>
         ) : (
-          orders.map((order) => <OrderCard key={order.id} order={order} />)
+          orders.map((order) => <OrderCard key={order?._id} order={order} />)
         )}
       </div>
     </div>
   );
 };
 
+
 const OrderCard = ({ order }) => {
-  const date = new Date(order.createdAt);
+  const date = new Date(order.updatedAt);
   const formattedDate = date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   const formattedTime = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 
