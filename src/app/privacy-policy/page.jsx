@@ -1,3 +1,6 @@
+// app/privacy-policy/page.tsx (or page.jsx)
+"use client";
+
 import React from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -5,7 +8,7 @@ import Navbar from '../components/Navbar';
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-white text-black">
-        <Navbar/>
+      <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-10">
         <h1 className="text-4xl font-bold mb-6 text-center text-red-600">Privacy Policy</h1>
 
@@ -87,7 +90,7 @@ const PrivacyPolicy = () => {
           Last updated: July 4, 2025
         </p>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
