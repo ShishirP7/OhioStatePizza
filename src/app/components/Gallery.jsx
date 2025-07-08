@@ -11,9 +11,9 @@ const NextArrow = ({ className, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className={`${className} z-10 text-gray-800 dark:text-white hover:text-red-600 dark:hover:text-red-400`}
+      className={`${className} z-10 text-gray-800 dark:text-gray-400 bg-red-700 hover:text-red-600 dark:hover:text-red-400`}
     >
-      <FaArrowRight size={24} />
+      <FaArrowRight  size={24} />
     </div>
   );
 };
@@ -43,7 +43,7 @@ const settings = {
   infinite: true,
   speed: 500,
   slidesToShow: 4,
-  slidesToScroll: 3,
+  slidesToScroll: 4,
   autoplay: true,
   autoplaySpeed: 2000,
   arrows: true,

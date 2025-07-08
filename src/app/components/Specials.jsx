@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
 import { ShoppingCart } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import CustomizeComboForm from "./modals/CustomizeComboform";
@@ -9,9 +7,6 @@ import CustomizeComboForm from "./modals/CustomizeComboform";
 const Specials = () => {
   const [specials, setSpecials] = useState([]);
   const [selectedCombo, setSelectedCombo] = useState(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [loaded, setLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const fetchCombos = async () => {
@@ -24,47 +19,12 @@ const Specials = () => {
       }
     };
     fetchCombos();
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const shouldUseCarousel = isMobile || specials.length > 4;
-
-  const [sliderRef, instanceRef] = useKeenSlider({
-    loop: true,
-    slides: {
-      perView: 1,
-      spacing: 16,
-    },
-    breakpoints: {
-      "(min-width: 768px)": {
-        slides: { perView: Math.min(specials.length, 2), spacing: 16 },
-      },
-      "(min-width: 1024px)": {
-        slides: { perView: Math.min(specials.length, 3), spacing: 16 },
-      },
-      "(min-width: 1280px)": {
-        slides: { perView: Math.min(specials.length, 4), spacing: 16 },
-      },
-    },
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-    created() {
-      setLoaded(true);
-    },
-  });
 
   return (
     <section className="w-full py-16 bg-white text-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h3 className="text-orange-600 font-bold text:sm md:text-xl mb-2 uppercase tracking-widest">
+        <h3 className="text-orange-600 font-bold text-xl mb-2 uppercase tracking-widest">
           Double the Fun, Cut the Price!
         </h3>
         <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
@@ -72,39 +32,18 @@ const Specials = () => {
         </h2>
 
         <ScrollReveal>
-          <div
-            ref={shouldUseCarousel ? sliderRef : null}
-            className={
-              shouldUseCarousel
-                ? "keen-slider"
-                : `grid justify-center gap-8 ${
-                    specials.length === 1
-                      ? "grid-cols-1"
-                      : specials.length === 2
-                      ? "grid-cols-2 max-w-3xl mx-auto"
-                      : specials.length === 3
-                      ? "grid-cols-3"
-                      : "grid-cols-4"
-                  }`
-            }
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {specials.map((combo) => (
               <div
                 key={combo._id}
-                className={`relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 group ${
-                  shouldUseCarousel ? "keen-slider__slide" : ""
-                }`}
+                className="relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 group"
               >
                 {combo.image && (
-                  <div className="w-full aspect-[3/2] overflow-hidden">
-                    <img
-                      src={combo.image.startsWith("data")
-                        ? combo.image
-                        : `data:image/jpeg;base64,${combo.image}`}
-                      alt={combo.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
+                  <img
+                    src={combo.image.startsWith("data") ? combo.image : `data:image/jpeg;base64,${combo.image}`}
+                    alt={combo.name}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
+                  />
                 )}
                 <div className="p-5 text-left">
                   <h4 className="text-xl font-bold text-gray-800 group-hover:text-orange-600">
@@ -124,6 +63,20 @@ const Specials = () => {
                           <span className="font-semibold">
                             {ci.item?.name || "Unknown Item"}
                           </span>
+                          {/* {ci.toppings?.length > 0 && (
+                            <ul className="ml-5 mt-1 list-[circle] text-xs text-gray-600">
+                              {ci.toppings.map((top, j) => (
+                                <li key={j}>
+                                  {top.name}
+                                  {top.extraPrice > 0 && (
+                                    <span>
+                                      {" "}(+${top.extraPrice.toFixed(2)})
+                                    </span>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )} */}
                         </li>
                       ))}
                     </ul>
@@ -143,23 +96,6 @@ const Specials = () => {
               </div>
             ))}
           </div>
-
-          {/* Dots */}
-          {shouldUseCarousel && loaded && (
-            <div className="flex justify-center mt-6 gap-2">
-              {Array.from({ length: instanceRef?.current?.track.details.slides.length || 0 }).map(
-                (_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => instanceRef.current?.moveToIdx(idx)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      currentSlide === idx ? "bg-orange-500" : "bg-gray-300"
-                    }`}
-                  ></button>
-                )
-              )}
-            </div>
-          )}
         </ScrollReveal>
 
         {selectedCombo && (
