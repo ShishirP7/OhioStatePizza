@@ -54,8 +54,8 @@ export default function MenuSection() {
     <section className="w-full py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <ScrollReveal>
-          <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">Menu</h3>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-gray-900">
+          <h3 className="text-red-500 font-bold text-sm  md:text-xl mb-2 uppercase">Menu</h3>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-12">
             Pizza. Wings. Magic.
           </h2>
         </ScrollReveal>
@@ -78,7 +78,7 @@ export default function MenuSection() {
                     }`}
                   >
                     <span className="text-3xl">{cat.icon}</span>
-                    <span className="text-sm font-semibold mt-1 uppercase">{cat.category}</span>
+                    <p className="text-sm md:text-md  font-bold mt-1 uppercase tracking-wide">{cat.category}</p>
                   </button>
                 ))}
               </div>
@@ -98,7 +98,7 @@ export default function MenuSection() {
                       className="relative border-b border-dotted pb-3"
                     >
                       <div className="flex justify-between items-center">
-                        <p className="text-lg font-semibold text-gray-900">{item.name}</p>
+                        <p className=" text-sm md:text-md lg:text-lg font-semibold text-gray-900">{item.name}</p>
                         <div className="flex items-center gap-3">
                           <p className="text-red-600 font-bold text-lg">${item.price?.toFixed(2)}</p>
                           <button

@@ -69,10 +69,15 @@ const Testimonial = () => {
     <section className="w-full py-20 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <ScrollReveal>
+
           <h4 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
             Reviews
           </h4>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
+         
+
+        
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
+
             Slice of Feedback
           </h2>
         </ScrollReveal>
