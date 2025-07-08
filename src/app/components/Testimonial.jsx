@@ -43,10 +43,10 @@ const Testimonial = () => {
     <section className="w-full py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <ScrollReveal>
-          <h4 className="text-red-500 font-bold text-xl mb-2 uppercase">
+          <h3 className="text-orange-600 font-bold text:sm md:text-xl mb-2 uppercase tracking-widest">
             Testimonial
-          </h4>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
+          </h3>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
             Slice of Feedback
           </h2>
         </ScrollReveal>

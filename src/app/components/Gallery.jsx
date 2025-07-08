@@ -2,11 +2,10 @@
 "use client";
 import React from "react";
 import ScrollReveal from "./ScrollReveal";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import Slider from 'react-slick';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const NextArrow = ({ className, onClick }) => {
   return (
@@ -30,7 +29,6 @@ const PrevArrow = ({ className, onClick }) => {
   );
 };
 
-
 const burgers = [
   "/ohio-state-pizza-sticker-1.webp",
   "/ohio-state-pizza-sticker-2.webp",
@@ -51,7 +49,7 @@ const settings = {
   arrows: true,
   pauseOnHover: true,
   centerMode: true,
-  centerPadding: '20px',
+  centerPadding: "20px",
   nextArrow: <NextArrow />,
   prevArrow: <PrevArrow />,
   responsive: [
@@ -71,16 +69,16 @@ const settings = {
 };
 
 const BurgerGallery = () => {
-  
-
   return (
     <section className="w-full py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <ScrollReveal>
-          <h4 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
+         
+
+          <h3 className="text-orange-600 font-bold text:sm md:text-xl mb-2 uppercase tracking-widest">
             Our hottest deals, ready till 2:30 AM every night.
-          </h4>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-12">
+          </h3>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
             Late Cravings? We Got You.
           </h2>
 
