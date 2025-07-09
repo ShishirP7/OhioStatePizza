@@ -69,7 +69,8 @@ const Hero = ({ onOrderNowClick }) => {
               </div>
 
               {/* Text Content */}
-              <div className="relative z-30 flex-1 flex flex-col justify-start text-left p-6 md:p-20">
+             <div className="relative z-30 flex-1 flex flex-col justify-center md:justify-start text-left p-6 md:p-20 pb-12">
+
                 <div className="flex flex-col mt-24">
                   <h3 className="font-normal text-xl md:text-3xl mb-3 drop-shadow-xl text-white">
                     {slide.subtitle}

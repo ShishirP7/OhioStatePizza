@@ -92,7 +92,7 @@ export default function EditCartItemForm({ item, onClose }) {
   return (
     <div className="space-y-4 text-gray-800">
       <div>
-        <h3 className="font-semibold">Quantity</h3>
+        <h2 className="font-semibold">Quantity</h2>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}

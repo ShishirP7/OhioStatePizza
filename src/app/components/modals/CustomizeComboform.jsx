@@ -54,7 +54,8 @@ export default function CustomizeComboForm({ item, onClose }) {
   const handleAddToCart = () => {
     const updatedItems = item.items.map((ci, idx) => {
       const selected = selectedOptions[idx] || [];
-      const selectedToppings = ci.toppings?.filter((t) => selected.includes(t.name)) || [];
+      const selectedToppings =
+        ci.toppings?.filter((t) => selected.includes(t.name)) || [];
 
       return {
         ...ci,
@@ -87,12 +88,16 @@ export default function CustomizeComboForm({ item, onClose }) {
     <div className="space-y-4 text-gray-800 max-h-[75vh] overflow-y-auto pr-1">
       <div className="text-center">
         <h2 className="text-xl font-bold">{item.name}</h2>
-        {item.description && <p className="text-sm text-gray-500 mt-1">{item.description}</p>}
+        {item.description && (
+          <p className="text-sm text-gray-500 mt-1">{item.description}</p>
+        )}
       </div>
 
       {item.items.map((ci, idx) => (
         <div key={idx}>
-          <h4 className="font-semibold mb-2">{ci.item?.name || `Item ${idx + 1}`}</h4>
+          <h4 className="font-semibold mb-2">
+            {ci.item?.name || `Item ${idx + 1}`}
+          </h4>
           <div className="flex flex-wrap gap-2">
             {ci.toppings?.length > 0 ? (
               ci.toppings.map((top) => {
@@ -100,13 +105,17 @@ export default function CustomizeComboForm({ item, onClose }) {
                 return (
                   <button
                     key={top.name}
-                    onClick={() => handleToppingToggle(idx, top.name, top.extraPrice)}
+                    onClick={() =>
+                      handleToppingToggle(idx, top.name, top.extraPrice)
+                    }
                     className={`px-2 py-1 border rounded text-sm transition-all ${
                       selected ? "bg-red-600 text-white" : "bg-gray-100"
                     }`}
                   >
                     {top.name}
-                    {top.extraPrice > 0 && <span> (+${top.extraPrice.toFixed(2)})</span>}
+                    {top.extraPrice > 0 && (
+                      <span> (+${top.extraPrice.toFixed(2)})</span>
+                    )}
                   </button>
                 );
               })
@@ -118,7 +127,8 @@ export default function CustomizeComboForm({ item, onClose }) {
       ))}
 
       <div className="pt-4">
-        <h3 className="font-semibold text-center">Quantity</h3>
+        <h1 className="font-semibold">Quantity</h1>
+
         <div className="flex justify-center items-center gap-2">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -136,7 +146,9 @@ export default function CustomizeComboForm({ item, onClose }) {
         </div>
       </div>
 
-      <div className="text-right font-bold text-lg pt-2">Total: ${totalPrice}</div>
+      <div className="text-right font-bold text-lg pt-2">
+        Total: ${totalPrice}
+      </div>
 
       <button
         onClick={handleAddToCart}
