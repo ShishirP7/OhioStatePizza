@@ -4,7 +4,7 @@ import ScrollFade from "./ScrollFade";
 
 const slides = [
   {
-    title: "Tender Strip \nTreat",
+    title: "Tender \nStrip \nTreat",
     subtitle: "New in Menu",
     details: "(6 Pcs)",
     price: "$12.99",
@@ -13,7 +13,7 @@ const slides = [
     image: "chick1.webp",
   },
   {
-    title: "TWO \nX-Large Pizzas",
+    title: "TWO \nX-Large \nPizzas",
     subtitle: "Pizza Special",
     details: "(One toping for each)",
     price: "$23.99",
@@ -22,7 +22,7 @@ const slides = [
     image: "chick2.webp",
   },
   {
-    title: "Stacked With Wings",
+    title: "Stacked \nWith \nWings",
     subtitle: "Winglicious",
     details: "(10 Pcs)",
     price: "$11.99",
@@ -36,11 +36,11 @@ const Hero = ({ onOrderNowClick }) => {
   return (
     <div className="relative w-full h-screen">
       {/* Centered Logo */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
+      <div className="absolute top-0 md:left-1/2 md:-translate-x-1/2 left-5 z-20">
         <img
           src="/logo1.png"
           alt="Ohio State Pizza Logo"
-          className="h-32 w-auto object-contain"
+          className="h-36 w-auto object-cover"
         />
       </div>
 
@@ -71,7 +71,7 @@ const Hero = ({ onOrderNowClick }) => {
               {/* Text Content */}
              <div className="relative z-30 flex-1 flex flex-col justify-center md:justify-start text-left p-6 md:p-20 pb-12">
 
-                <div className="flex flex-col mt-24">
+                <div className="flex flex-col mt-32">
                   <h3 className="font-normal text-xl md:text-3xl mb-3 drop-shadow-xl text-white">
                     {slide.subtitle}
                   </h3>

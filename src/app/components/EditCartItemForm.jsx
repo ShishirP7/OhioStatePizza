@@ -20,31 +20,29 @@ export default function EditCartItemForm({ item, onClose }) {
 
   const [activeTab, setActiveTab] = useState(optionKeys[0] || "");
 
-  const toggleOption = (optionType, label, comboIndex = null) => {
-    if (isCombo && comboIndex !== null) {
-      setSelectedOptions((prev) => {
-        const prevToppings = prev[comboIndex] || [];
-        const newToppings = prevToppings.includes(label)
-          ? prevToppings.filter((l) => l !== label)
-          : [...prevToppings, label];
+const toggleOption = (optionType, label, comboIndex = null) => {
+  if (isCombo && comboIndex !== null) {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [comboIndex]: [label], // ✅ allow only 1 selection
+    }));
+  } else {
+    const isMultiple = item?.options[optionType]?.isMultiple;
+    setSelectedOptions((prev) => {
+      const current = prev[optionType] || [];
+      return {
+        ...prev,
+        [optionType]: isMultiple
+          ? current.includes(label)
+            ? current.filter((l) => l !== label)
+            : [...current, label]
+          : label,
+      };
+    });
+  }
+};
 
-        return { ...prev, [comboIndex]: newToppings };
-      });
-    } else {
-      const isMultiple = item?.options[optionType]?.isMultiple;
-      setSelectedOptions((prev) => {
-        const current = prev[optionType] || [];
-        return {
-          ...prev,
-          [optionType]: isMultiple
-            ? current.includes(label)
-              ? current.filter((l) => l !== label)
-              : [...current, label]
-            : label,
-        };
-      });
-    }
-  };
+
 
   useEffect(() => {
     let total = item.price || 0;
