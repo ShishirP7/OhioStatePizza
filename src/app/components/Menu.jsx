@@ -54,7 +54,7 @@ export default function MenuSection() {
     <section className="w-full py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <ScrollReveal>
-          <h3 className="text-red-500 font-bold text-sm  md:text-xl mb-2 uppercase">Menu</h3>
+          <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">Menu</h3>
           <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-12">
             Pizza. Wings. Magic.
           </h2>

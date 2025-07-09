@@ -70,12 +70,10 @@ const Testimonial = () => {
       <div className="max-w-7xl mx-auto px-4 text-center">
         <ScrollReveal>
 
-          <h4 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">
+          <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">
             Reviews
-          </h4>
+          </h3>
          
-
-        
           <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
 
             Slice of Feedback

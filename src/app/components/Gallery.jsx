@@ -75,7 +75,7 @@ const BurgerGallery = () => {
         <ScrollReveal>
          
 
-          <h3 className="text-orange-600 font-bold text:sm md:text-xl mb-2 uppercase tracking-widest">
+          <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">
             Our hottest deals, ready till 2:30 AM every night.
           </h3>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">

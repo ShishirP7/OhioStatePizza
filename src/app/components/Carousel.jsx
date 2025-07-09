@@ -4,7 +4,7 @@ import ScrollFade from "./ScrollFade";
 
 const slides = [
   {
-    title: "Tender Strip Treat",
+    title: "Tender Strip \nTreat",
     subtitle: "New in Menu",
     details: "(6 Pcs)",
     price: "$12.99",
@@ -13,9 +13,9 @@ const slides = [
     image: "chick1.webp",
   },
   {
-    title: "TWO X-Large Pizzas",
+    title: "TWO \nX-Large Pizzas",
     subtitle: "Pizza Special",
-    details: "(one toping",
+    details: "(One toping for each)",
     price: "$23.99",
     priceColor: "text-red-700",
     blendColor: "bg-[#ffc107]",
@@ -69,12 +69,12 @@ const Hero = ({ onOrderNowClick }) => {
               </div>
 
               {/* Text Content */}
-              <div className="relative z-30 flex-1 flex flex-col justify-center text-left p-6 md:p-20">
-                <div className="flex flex-col justify-center">
-                  <h3 className="text-2xl  mb-3 drop-shadow-xl text-white">
+              <div className="relative z-30 flex-1 flex flex-col justify-start text-left p-6 md:p-20">
+                <div className="flex flex-col mt-24">
+                  <h3 className="font-normal text-xl md:text-3xl mb-3 drop-shadow-xl text-white">
                     {slide.subtitle}
                   </h3>
-                  <h1 className="text-5xl md:text-6xl mb-2 drop-shadow-xl text-white font-sans font-extrabold">
+                  <h1 className="whitespace-pre-line text-5xl md:text-6xl mb-2 drop-shadow-xl text-white font-sans font-black">
                     {slide.title}
                   </h1>
                   <p className="text-lg font-semibold mb-1 drop-shadow text-white">
@@ -88,15 +88,14 @@ const Hero = ({ onOrderNowClick }) => {
                   {slide.title.includes("Pizzas") && (
                     <button
                       onClick={onOrderNowClick}
-                      className="mt-4 font-bold underline underline-offset-4 text-orange-600 bg-white px-4 py-2 rounded shadow-lg hover:bg-amber-300 transition-colors duration-100 hover:cursor-pointer"
+                      className="rounded-full mt-8 font-bold underline-offset-4 text-white bg-gray-900 px-4 py-2 rounded shadow-lg hover:bg-orange-600 transition-colors duration-100 hover:cursor-pointer"
                     >
                       Order Now
                     </button>
-
-                   
                   )}
                 </div>
               </div>
+
             </div>
           );
         })}

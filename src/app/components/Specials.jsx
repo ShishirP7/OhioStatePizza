@@ -76,7 +76,7 @@ const Specials = () => {
   return (
     <section className="w-full py-16 bg-white text-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h3 className="text-orange-600 font-bold text-xl mb-2 uppercase tracking-widest">
+        <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">
           Double the Fun, Cut the Price!
         </h3>
         <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">

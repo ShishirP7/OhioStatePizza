@@ -12,7 +12,7 @@ const DeliveryReward = () => {
         <ScrollReveal>
           <div className="flex flex-col justify-between text-left">
             <div>
-              <h3 className="text-orange-600 font-bold text:sm md:text-xl mb-2 uppercase tracking-widest">
+              <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">
                 Delivery & Pickup
               </h3>
               <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
@@ -39,7 +39,7 @@ const DeliveryReward = () => {
           {/* Reward Section */}
           <div className="flex flex-col justify-between text-left">
             <div>
-              <h3 className="text-orange-600 font-bold text:sm md:text-xl mb-2 uppercase tracking-widest">
+              <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">
                 Made with Real Love
               </h3>
               <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900">
