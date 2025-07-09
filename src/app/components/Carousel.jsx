@@ -69,9 +69,8 @@ const Hero = ({ onOrderNowClick }) => {
               </div>
 
               {/* Text Content */}
-             <div className="relative z-30 flex-1 flex flex-col justify-center md:justify-start text-left p-6 md:p-20 pb-12">
-
-                <div className="flex flex-col mt-32">
+              <div className="relative z-30 flex-1 flex flex-col justify-center md:justify-start text-left p-6 md:p-20 pb-12">
+                <div className="flex flex-col lg:mt-32 ">
                   <h3 className="font-normal text-xl md:text-3xl mb-3 drop-shadow-xl text-white">
                     {slide.subtitle}
                   </h3>
@@ -86,17 +85,18 @@ const Hero = ({ onOrderNowClick }) => {
                   >
                     {slide.price}
                   </p>
-                  {slide.title.includes("Pizzas") && (
-                    <button
-                      onClick={onOrderNowClick}
-                      className="rounded-full mt-8 font-bold underline-offset-4 text-white bg-gray-900 px-4 py-2 rounded shadow-lg hover:bg-orange-600 transition-colors duration-100 hover:cursor-pointer"
-                    >
-                      Order Now
-                    </button>
-                  )}
+                  <div className="flex md:w-full w-1/2">
+                    {slide.title.includes("Pizzas") && (
+                      <button
+                        onClick={onOrderNowClick}
+                        className="mt-4 w-11/12 mx-auto bg-red-600 text-white py-2 rounded-md text-sm font-semibold shadow hover:bg-red-700 transition"
+                      >
+                        Order Now
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-
             </div>
           );
         })}
