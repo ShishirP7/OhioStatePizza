@@ -16,8 +16,6 @@ import { useMenu } from "./context/menuContext";
 import SettingsButton from "./components/SettingsButton";
 import axios from "axios";
 
-
-
 export default function Home() {
   const menuRef = useRef(null);
   const [customerEmail, setCustomerEmail] = useState("");
@@ -38,8 +36,6 @@ export default function Home() {
     setCustomerEmail(savedEmail);
     setIsLoading(false);
   }, []);
-
- 
 
   if (isLoading) {
     return (
@@ -75,11 +71,10 @@ export default function Home() {
         />
       </ScrollFade>
 
-      <Specials />
-
       <div ref={menuRef}>
-        <MenuSection />
+        <Specials />
       </div>
+      <MenuSection />
 
       <DeliveryReward />
       <Testimonial />
@@ -112,8 +107,20 @@ function SettingsModal({ open, onClose }) {
 
   const validateDeliveryZip = (zip, storeId) => {
     if (!zip) return false;
-    if (nelsonZips.includes(zip) && storeId && nearestStore && storeId === nearestStore._id) return true;
-    if (hudsonZips.includes(zip) && storeId && nearestStore && storeId === nearestStore._id) return true;
+    if (
+      nelsonZips.includes(zip) &&
+      storeId &&
+      nearestStore &&
+      storeId === nearestStore._id
+    )
+      return true;
+    if (
+      hudsonZips.includes(zip) &&
+      storeId &&
+      nearestStore &&
+      storeId === nearestStore._id
+    )
+      return true;
     return false;
   };
 
@@ -125,7 +132,9 @@ function SettingsModal({ open, onClose }) {
     }
     setChecking(true);
     try {
-      const res = await axios.get(`https://api.ohiostatepizzas.com/api/location/items-by-zip/${zipCode.trim()}`);
+      const res = await axios.get(
+        `https://api.ohiostatepizzas.com/api/location/items-by-zip/${zipCode.trim()}`
+      );
       if (res.data?.serviceAvailable && res.data?.nearestStore) {
         setNearestStore(res.data.nearestStore);
         setStep(2);
@@ -140,46 +149,55 @@ function SettingsModal({ open, onClose }) {
     }
   };
 
-const handleConfirm = () => {
-  if (!nearestStore) return;
+  const handleConfirm = () => {
+    if (!nearestStore) return;
 
-  // Validate
-  if (!serviceType) {
-    setError("Please select Carryout or Delivery.");
-    return;
-  }
-
-  if (serviceType === "Delivery") {
-    if (!deliveryAddress.street || !deliveryAddress.zip || !deliveryAddress.city) {
-      setError("Please fill in all delivery address fields.");
+    // Validate
+    if (!serviceType) {
+      setError("Please select Carryout or Delivery.");
       return;
     }
-    if (!validateDeliveryZip(deliveryAddress.zip.trim(), nearestStore._id)) {
-      setError(`Delivery is not available to ZIP code ${deliveryAddress.zip} for this store.`);
-      return;
+
+    if (serviceType === "Delivery") {
+      if (
+        !deliveryAddress.street ||
+        !deliveryAddress.zip ||
+        !deliveryAddress.city
+      ) {
+        setError("Please fill in all delivery address fields.");
+        return;
+      }
+      if (!validateDeliveryZip(deliveryAddress.zip.trim(), nearestStore._id)) {
+        setError(
+          `Delivery is not available to ZIP code ${deliveryAddress.zip} for this store.`
+        );
+        return;
+      }
     }
-  }
 
-  // Always save these fields
-  localStorage.setItem("customerEmail", email);
-  localStorage.setItem("userZipCode", zipCode.trim());
-  localStorage.setItem("userLocation", serviceType);
-  localStorage.setItem("userStoreId", nearestStore._id);
-  localStorage.setItem("userStoreName", nearestStore.name);
+    // Always save these fields
+    localStorage.setItem("customerEmail", email);
+    localStorage.setItem("userZipCode", zipCode.trim());
+    localStorage.setItem("userLocation", serviceType);
+    localStorage.setItem("userStoreId", nearestStore._id);
+    localStorage.setItem("userStoreName", nearestStore.name);
 
-  // Save delivery address if Delivery
-  if (serviceType === "Delivery") {
-    localStorage.setItem("userDeliveryAddress", JSON.stringify({
-      ...deliveryAddress,
-      storeId: nearestStore._id,
-      storeName: nearestStore.name
-    }));
-  } else {
-    localStorage.removeItem("userDeliveryAddress");
-  }
+    // Save delivery address if Delivery
+    if (serviceType === "Delivery") {
+      localStorage.setItem(
+        "userDeliveryAddress",
+        JSON.stringify({
+          ...deliveryAddress,
+          storeId: nearestStore._id,
+          storeName: nearestStore.name,
+        })
+      );
+    } else {
+      localStorage.removeItem("userDeliveryAddress");
+    }
 
-  window.location.reload();
-};
+    window.location.reload();
+  };
 
   return (
     <Transition show={open} as={Fragment}>
@@ -245,7 +263,9 @@ const handleConfirm = () => {
               {step === 2 && nearestStore && (
                 <>
                   <div className="mb-4 text-left">
-                    <p className="font-semibold text-gray-700 mb-1">✅ Service Available!</p>
+                    <p className="font-semibold text-gray-700 mb-1">
+                      ✅ Service Available!
+                    </p>
                     <p className="text-gray-800">{nearestStore.name}</p>
                     <p className="text-gray-500 text-sm">
                       {nearestStore.address.formatted}
@@ -353,5 +373,3 @@ const handleConfirm = () => {
     </Transition>
   );
 }
-
-

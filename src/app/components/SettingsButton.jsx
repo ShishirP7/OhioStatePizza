@@ -94,8 +94,8 @@ export default function SettingsButton() {
           onClick={() => setOpen(true)}
           className="flex items-center gap-2 px-2 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
         >
-          <MdMyLocation color="orange" className="text-lg" />
-          <p className="hidden lg:flex text-amber-400">Address</p>
+          <MdMyLocation className="text-lg text-orange-600" />
+          <p className="hidden lg:flex text-orange-600">Address</p>
         </button>
 
         {hasEmail && (
@@ -103,8 +103,8 @@ export default function SettingsButton() {
             href="/orders"
             className="flex items-center gap-2 px-2 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
           >
-            <PiCookingPotFill color="orange" className="text-lg" />
-            <p className="hidden lg:flex  text-amber-400">Orders</p>
+            <PiCookingPotFill className="text-lg text-orange-600" />
+            <p className="hidden lg:flex  text-orange-600">Orders</p>
           </Link>
         )}
       </div>

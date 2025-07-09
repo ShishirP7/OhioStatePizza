@@ -70,18 +70,18 @@ const Hero = ({ onOrderNowClick }) => {
 
               {/* Text Content */}
               <div className="relative z-30 flex-1 flex flex-col justify-center md:justify-start text-left p-6 md:p-20 pb-12">
-                <div className="flex flex-col lg:mt-32 ">
-                  <h3 className="font-normal text-xl md:text-3xl mb-3 drop-shadow-xl text-white">
+                <div className="flex flex-col lg:mt-32 gap-2 ">
+                  <h3 className="font-normal text-3xl md:text-3xl mb-3 drop-shadow-xl text-white">
                     {slide.subtitle}
                   </h3>
-                  <h1 className="whitespace-pre-line text-5xl md:text-6xl mb-2 drop-shadow-xl text-white font-sans font-black">
+                  <h1 className="whitespace-pre-line text-8xl md:text-7xl mb-2 drop-shadow-xl text-white font-sans font-black">
                     {slide.title}
                   </h1>
-                  <p className="text-lg font-semibold mb-1 drop-shadow text-white">
+                  <p className="md:text-lg text-xl font-semibold mb-1 drop-shadow text-white">
                     {slide.details}
                   </p>
                   <p
-                    className={`text-4xl md:text-5xl font-bold drop-shadow-xl ${slide.priceColor}`}
+                    className={`text-5xl md:text-5xl font-bold drop-shadow-xl ${slide.priceColor}`}
                   >
                     {slide.price}
                   </p>
@@ -89,7 +89,7 @@ const Hero = ({ onOrderNowClick }) => {
                     {slide.title.includes("Pizzas") && (
                       <button
                         onClick={onOrderNowClick}
-                        className="mt-4 w-11/12 mx-auto bg-red-600 text-white py-2 rounded-md text-sm font-semibold shadow hover:bg-red-700 transition"
+                        className="mt-4 w-11/12 mx-auto bg-red-600 text-lg text-white py-2 rounded-full  font-bold shadow hover:bg-red-700 transition"
                       >
                         Order Now
                       </button>
