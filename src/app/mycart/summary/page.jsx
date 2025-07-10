@@ -155,7 +155,7 @@ export default function CartSummary() {
     0
   );
 
-  const deliveryFee = serviceType === "Delivery" ? 3 : 0;
+  const deliveryFee = serviceType === "Delivery" ? 4.95 : 0;
 
   const total = (cartSubtotal + deliveryFee).toFixed(2);
 
