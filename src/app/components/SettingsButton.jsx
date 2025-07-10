@@ -4,6 +4,8 @@ import { useState, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiSettings } from "react-icons/fi";
+import { ImLocation2 } from "react-icons/im";
+import { MdMyLocation } from "react-icons/md";
 import { PiCookingPotFill } from "react-icons/pi";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -91,19 +93,19 @@ export default function SettingsButton() {
       <div className="flex items-center gap-2">
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
+          className="flex items-center gap-2 px-2 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
         >
-          <FiSettings className="text-lg" />
-          <p className="hidden lg:flex">Settings</p>
+          <ImLocation2 className="text-lg text-orange-600" />
+          <p className="hidden lg:flex text-orange-600">Address</p>
         </button>
 
         {hasEmail && (
           <Link
             href="/orders"
-            className="flex items-center gap-2 px-3 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
+            className="flex items-center gap-2 px-2 py-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-800 shadow"
           >
-            <PiCookingPotFill className="text-lg" />
-            <p className="hidden lg:flex">Orders</p>
+            <PiCookingPotFill className="text-lg text-orange-600" />
+            <p className="hidden lg:flex  text-orange-600">Orders</p>
           </Link>
         )}
       </div>

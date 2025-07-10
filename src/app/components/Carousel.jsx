@@ -4,7 +4,7 @@ import ScrollFade from "./ScrollFade";
 
 const slides = [
   {
-    title: "Tender Strip Treat",
+    title: "Tender \nStrip \nTreat",
     subtitle: "New in Menu",
     details: "(6 Pcs)",
     price: "$12.99",
@@ -13,16 +13,16 @@ const slides = [
     image: "chick1.webp",
   },
   {
-    title: "TWO XL Pizzas + 1 Small FREE",
-    subtitle: "🎉 Grand Opening Special 🎉",
-    details: "All for",
+    title: "TWO \nX-Large \nPizzas",
+    subtitle: "Pizza Special",
+    details: "(One toping for each)",
     price: "$23.99",
     priceColor: "text-red-700",
     blendColor: "bg-[#ffc107]",
     image: "chick2.webp",
   },
   {
-    title: "Stacked With Wings",
+    title: "Stacked \nWith \nWings",
     subtitle: "Winglicious",
     details: "(10 Pcs)",
     price: "$11.99",
@@ -36,11 +36,11 @@ const Hero = ({ onOrderNowClick }) => {
   return (
     <div className="relative w-full h-screen">
       {/* Centered Logo */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
+      <div className="absolute top-0 md:left-1/2 md:-translate-x-1/2 left-5 z-20">
         <img
           src="/logo1.png"
           alt="Ohio State Pizza Logo"
-          className="h-32 w-auto object-contain"
+          className="h-36 w-auto object-cover"
         />
       </div>
 
@@ -69,30 +69,32 @@ const Hero = ({ onOrderNowClick }) => {
               </div>
 
               {/* Text Content */}
-              <div className="relative z-30 flex-1 flex flex-col justify-center text-left p-6 md:p-20">
-                <div className="flex flex-col justify-center">
-                  <h3 className="text-2xl font-[cursive] mb-3 drop-shadow-xl text-white">
+              <div className="relative z-30 flex-1 flex flex-col justify-center md:justify-start text-left p-6 md:p-20 pb-12">
+                <div className="flex flex-col lg:mt-32 gap-2 ">
+                  <h3 className="font-normal text-3xl md:text-3xl mb-3 drop-shadow-xl text-white">
                     {slide.subtitle}
                   </h3>
-                  <h1 className="text-5xl md:text-6xl mb-2 drop-shadow-xl text-white font-sans font-extrabold">
+                  <h1 className="whitespace-pre-line text-8xl md:text-7xl mb-2 drop-shadow-xl text-white font-sans font-black">
                     {slide.title}
                   </h1>
-                  <p className="text-lg font-semibold mb-1 drop-shadow text-white">
+                  <p className="md:text-lg text-xl font-semibold mb-1 drop-shadow text-white">
                     {slide.details}
                   </p>
                   <p
-                    className={`text-4xl md:text-5xl font-bold drop-shadow-xl ${slide.priceColor}`}
+                    className={`text-5xl md:text-5xl font-bold drop-shadow-xl ${slide.priceColor}`}
                   >
                     {slide.price}
                   </p>
-                  {slide.title.includes("Pizzas") && (
-                    <button
-                      onClick={onOrderNowClick}
-                      className="mt-4 font-bold underline underline-offset-4 text-black bg-white px-4 py-2 rounded shadow-lg hover:bg-amber-300 transition-colors duration-100 hover:cursor-pointer"
-                    >
-                      Order Now
-                    </button>
-                  )}
+                  <div className="flex md:w-full w-1/2">
+                    {slide.title.includes("Pizzas") && (
+                      <button
+                        onClick={onOrderNowClick}
+                        className="mt-4 w-11/12 mx-auto bg-red-600 text-lg text-white py-2 rounded-full  font-bold shadow hover:bg-red-700 transition"
+                      >
+                        Order Now
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

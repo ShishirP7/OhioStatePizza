@@ -76,7 +76,7 @@ export default function CustomizeNewItemForm({ item, onClose }) {
   return (
     <div className="space-y-4 text-gray-800">
       <div>
-        <h3 className="font-semibold">Quantity</h3>
+        <h1 className="font-semibold">Quantity</h1>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}

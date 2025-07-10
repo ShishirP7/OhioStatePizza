@@ -29,12 +29,13 @@ export default function MenuSection() {
   ).map((category) => {
     let icon;
     switch (category) {
-      case "Burgers": icon = "🍔"; break;
+      case "Sandwiches": icon = "🍔"; break;
       case "Pizzas": icon = "🍕"; break;
       case "Chicken": icon = "🍗"; break;
       case "Sides": icon = "🍟"; break;
       case "Drinks": icon = "🥤"; break;
-      case "Coffee": icon = "☕"; break;
+      case "Desserts": icon = "🍰"; break;
+      case "Dinner": icon = "🍝"; break;
       default: icon = "🍽️";
     }
     return { category, icon };
@@ -53,9 +54,9 @@ export default function MenuSection() {
     <section className="w-full py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <ScrollReveal>
-          <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive]">Menu</h3>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-gray-900">
-            Choose your combo <br />& order now!
+          <h3 className="text-orange-600 font-normal text-xl md:text-3xl mb-3">Menu</h3>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-12">
+            Pizza. Wings. Magic.
           </h2>
         </ScrollReveal>
 
@@ -77,7 +78,7 @@ export default function MenuSection() {
                     }`}
                   >
                     <span className="text-3xl">{cat.icon}</span>
-                    <span className="text-sm font-semibold mt-1 uppercase">{cat.category}</span>
+                    <p className="text-sm md:text-md  font-bold mt-1 uppercase tracking-wide">{cat.category}</p>
                   </button>
                 ))}
               </div>
@@ -97,7 +98,7 @@ export default function MenuSection() {
                       className="relative border-b border-dotted pb-3"
                     >
                       <div className="flex justify-between items-center">
-                        <p className="text-lg font-semibold text-gray-900">{item.name}</p>
+                        <p className=" text-md md:text-lg lg:text-lg font-medium text-gray-900">{item.name}</p>
                         <div className="flex items-center gap-3">
                           <p className="text-red-600 font-bold text-lg">${item.price?.toFixed(2)}</p>
                           <button

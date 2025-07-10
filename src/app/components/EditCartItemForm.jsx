@@ -20,31 +20,29 @@ export default function EditCartItemForm({ item, onClose }) {
 
   const [activeTab, setActiveTab] = useState(optionKeys[0] || "");
 
-  const toggleOption = (optionType, label, comboIndex = null) => {
-    if (isCombo && comboIndex !== null) {
-      setSelectedOptions((prev) => {
-        const prevToppings = prev[comboIndex] || [];
-        const newToppings = prevToppings.includes(label)
-          ? prevToppings.filter((l) => l !== label)
-          : [...prevToppings, label];
+const toggleOption = (optionType, label, comboIndex = null) => {
+  if (isCombo && comboIndex !== null) {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [comboIndex]: [label], // ✅ allow only 1 selection
+    }));
+  } else {
+    const isMultiple = item?.options[optionType]?.isMultiple;
+    setSelectedOptions((prev) => {
+      const current = prev[optionType] || [];
+      return {
+        ...prev,
+        [optionType]: isMultiple
+          ? current.includes(label)
+            ? current.filter((l) => l !== label)
+            : [...current, label]
+          : label,
+      };
+    });
+  }
+};
 
-        return { ...prev, [comboIndex]: newToppings };
-      });
-    } else {
-      const isMultiple = item?.options[optionType]?.isMultiple;
-      setSelectedOptions((prev) => {
-        const current = prev[optionType] || [];
-        return {
-          ...prev,
-          [optionType]: isMultiple
-            ? current.includes(label)
-              ? current.filter((l) => l !== label)
-              : [...current, label]
-            : label,
-        };
-      });
-    }
-  };
+
 
   useEffect(() => {
     let total = item.price || 0;
@@ -92,7 +90,7 @@ export default function EditCartItemForm({ item, onClose }) {
   return (
     <div className="space-y-4 text-gray-800">
       <div>
-        <h3 className="font-semibold">Quantity</h3>
+        <h2 className="font-semibold">Quantity</h2>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}

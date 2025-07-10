@@ -30,7 +30,7 @@ const TodaysSpecial = () => {
     <section className="w-full py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <ScrollReveal>
-          <h3 className="text-red-500 font-bold text-xl mb-2 uppercase font-[cursive] text-center">
+          <h3 className="text-red-500 font-bold text-xl mb-2 uppercase text-center">
             Today’s Specials
           </h3>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-10 text-gray-900 text-center">
