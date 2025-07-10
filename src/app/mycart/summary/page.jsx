@@ -624,7 +624,7 @@ export default function CartSummary() {
               {serviceType === "Delivery" && (
                 <div className="flex justify-between text-gray-800">
                   <span>Delivery Fee</span>
-                  <span>$3.00</span>
+                  <span>$4.95</span>
                 </div>
               )}
               <div className="flex justify-between font-bold text-lg text-gray-900 border-t border-gray-200 pt-2">
@@ -759,7 +759,7 @@ export default function CartSummary() {
                 </p>
                 {serviceType === "Delivery" && (
                   <p>
-                    <strong>Delivery Fee:</strong> $3.00
+                    <strong>Delivery Fee:</strong> $4.95
                   </p>
                 )}
                 <p className="font-bold pt-2">
