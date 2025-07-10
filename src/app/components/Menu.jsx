@@ -98,7 +98,7 @@ export default function MenuSection() {
                       className="relative border-b border-dotted pb-3"
                     >
                       <div className="flex justify-between items-center">
-                        <p className=" text-sm md:text-md lg:text-lg font-semibold text-gray-900">{item.name}</p>
+                        <p className=" text-md md:text-lg lg:text-lg font-medium text-gray-900">{item.name}</p>
                         <div className="flex items-center gap-3">
                           <p className="text-red-600 font-bold text-lg">${item.price?.toFixed(2)}</p>
                           <button
