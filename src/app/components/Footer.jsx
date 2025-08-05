@@ -92,14 +92,14 @@ const Footer = () => {
         <div className="text-center text-xs text-gray-400">
           © {new Date().getFullYear()} All rights reserved by OHS Pizza LLC
           <span className="mx-2">|</span>
-          Proudly developed by{" "}
+          
           <a
             href="https://mrkters.com/?source=client&campaign=ohs-pizza-web"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-white transition"
           >
-            Mrkters.com
+            Mrkters
           </a>
         </div>
       </div>
