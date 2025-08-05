@@ -1,8 +1,7 @@
+// app/layout.js or app/layout.tsx
 import { Barlow, Leckerli_One, Roboto } from "next/font/google";
 import "./globals.css";
-import Head from "next/head";
 import { CartProvider } from "./context/cartContext";
-import SettingsButton from "./components/SettingsButton";
 import { MenuProvider } from "./context/menuContext";
 
 // Font Configurations
@@ -27,15 +26,20 @@ const roboto = Roboto({
   display: "swap",
 });
 
+// ✅ Define metadata at the top of the layout file
+export const metadata = {
+  title: "Ohio State Pizzas",
+  icons: {
+    icon: "/icons/title_logo.png",
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
       className={`${barlow.variable} ${leckerli.variable} ${roboto.variable}`}
     >
-      <Head>
-        <link rel="icon" href="/icons/title_logo.png" type="image/png" />
-      </Head>
       <body className="font-body antialiased">
         <MenuProvider>
           <CartProvider>{children}</CartProvider>
