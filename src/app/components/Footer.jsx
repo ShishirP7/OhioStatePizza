@@ -1,5 +1,5 @@
 // components/Footer.tsx
-import React from 'react';
+import React from "react";
 
 const Footer = () => {
   return (
@@ -26,16 +26,22 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-3">Address</h4>
 
             <p className="text-sm text-gray-300 mb-3">
-              <span className="font-semibold text-white">Hudson Store</span><br />
-              325 E Hudson St,<br />
-              Columbus, OH 43202<br />
+              <span className="font-semibold text-white">Hudson Store</span>
+              <br />
+              325 E Hudson St,
+              <br />
+              Columbus, OH 43202
+              <br />
               PH: (614) 268-8181
             </p>
 
             <p className="text-sm text-gray-300">
-              <span className="font-semibold text-white">Nelson Store</span><br />
-              819 N Nelson Rd,<br />
-              Columbus, OH 43219<br />
+              <span className="font-semibold text-white">Nelson Store</span>
+              <br />
+              819 N Nelson Rd,
+              <br />
+              Columbus, OH 43219
+              <br />
               PH: (380) 268-8828
             </p>
           </div>
@@ -44,17 +50,26 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-3">Important Pages</h4>
             <ul className="space-y-2 text-sm text-gray-300">
               <li>
-                <a href="/privacy-policy" className="hover:text-white transition">
+                <a
+                  href="/privacy-policy"
+                  className="hover:text-white transition"
+                >
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="/terms-and-conditions" className="hover:text-white transition">
+                <a
+                  href="/terms-and-conditions"
+                  className="hover:text-white transition"
+                >
                   Terms & Conditions
                 </a>
               </li>
               <li>
-                <a href="/refund-policy" className="hover:text-white transition">
+                <a
+                  href="/refund-policy"
+                  className="hover:text-white transition"
+                >
                   Refund Policy
                 </a>
               </li>
@@ -71,11 +86,14 @@ const Footer = () => {
             </ul>
           </div>
 
-
           <div>
             <h4 className="font-bold text-lg mb-3">Opening hours</h4>
-            <p className="text-sm text-gray-300">Mon – Thu: 10:30 AM – 2:30 AM</p>
-            <p className="text-sm text-gray-300">Fri & Sat: 10:30 AM – 3:15 AM</p>
+            <p className="text-sm text-gray-300">
+              Mon – Thu: 10:30 AM – 2:30 AM
+            </p>
+            <p className="text-sm text-gray-300">
+              Fri & Sat: 10:30 AM – 3:15 AM
+            </p>
             <p className="text-sm text-gray-300">Sun: 11:00 AM – 2:30 AM</p>
           </div>
 
@@ -92,14 +110,14 @@ const Footer = () => {
         <div className="text-center text-xs text-gray-400">
           © {new Date().getFullYear()} All rights reserved by OHS Pizza LLC
           <span className="mx-2">|</span>
-          
+          Proudly developed by{" "}
           <a
             href="https://mrkters.com/?source=client&campaign=ohs-pizza-web"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-white transition"
           >
-            Mrkters
+            Mrkters.com
           </a>
         </div>
       </div>
